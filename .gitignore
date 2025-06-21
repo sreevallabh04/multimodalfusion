@@ -61,9 +61,11 @@ Thumbs.db
 # project/models/checkpoints/*.pth
 # project/logs/*.log
 
-# Large dataset files (exclude raw datasets, keep smaller processed data)
+# Large dataset files (exclude all datasets, keep only compressed archives)
 project/data/fruit/
 project/data/leaf/
+project/data/thermal/
+project/data/processed/
 
 # Temporary files
 *.tmp
