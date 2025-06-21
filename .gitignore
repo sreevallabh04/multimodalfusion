@@ -66,7 +66,7 @@ project/data/fruit/
 project/data/leaf/
 project/data/thermal/
 project/data/processed/
-
+dataset_archives
 # Temporary files
 *.tmp
 *.temp
