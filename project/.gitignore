@@ -1,0 +1,75 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyTorch
+*.pth
+*.pt
+*.pkl
+*.pickle
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environment variables
+.env
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Model checkpoints (large files)
+models/checkpoints/*.pth
+models/checkpoints/*.pt
+
+# Logs
+logs/*.log
+logs/*.txt
+
+# Data (too large for GitHub)
+data/fruit/
+data/leaf/
+data/processed/
+data/thermal/
+
+# Evaluation results (can be regenerated)
+evaluation_results/
+evaluation_results_final/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/ 
