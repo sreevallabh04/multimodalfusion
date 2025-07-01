@@ -24,26 +24,22 @@ from sklearn.preprocessing import label_binarize
 import cv2
 from PIL import Image
 from tqdm import tqdm
-import logging
 
 # Add project modules to path
 sys.path.append(str(Path(__file__).parent))
 from models.rgb_branch import RGBBranch, create_rgb_branch
-from models.fusion_model import AdvancedMultiModalFusionModel, create_fusion_model
+from models.fusion_model import MultiModalFusionModel, create_fusion_model
 from scripts.dataloader import create_dataloaders
 
 
 class ModelEvaluator:
-    """
-    Comprehensive model evaluation with metrics and visualizations.
-    Args:
-        model (torch.nn.Module): The model to evaluate.
-        device (torch.device): Device to use.
-        class_names (List[str]): List of class names.
-        model_type (str): 'rgb' or 'fusion'.
-    """
+    """Comprehensive model evaluation with metrics and visualizations."""
     
-    def __init__(self, model: torch.nn.Module, device: torch.device, class_names: List[str], model_type: str = 'rgb') -> None:
+    def __init__(self, 
+                 model: torch.nn.Module,
+                 device: torch.device,
+                 class_names: List[str],
+                 model_type: str = 'rgb'):
         self.model = model
         self.device = device
         self.class_names = class_names
@@ -52,17 +48,9 @@ class ModelEvaluator:
         
         self.model.to(device)
         self.model.eval()
-        self.logger = logging.getLogger("ModelEvaluator")
-        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     
     def evaluate_dataset(self, dataloader: torch.utils.data.DataLoader) -> Dict:
-        """
-        Evaluate model on dataset and return comprehensive metrics.
-        Args:
-            dataloader (torch.utils.data.DataLoader): DataLoader for evaluation.
-        Returns:
-            Dict: Evaluation metrics.
-        """
+        """Evaluate model on dataset and return comprehensive metrics."""
         all_predictions = []
         all_labels = []
         all_probabilities = []
@@ -113,15 +101,7 @@ class ModelEvaluator:
         return metrics
     
     def _calculate_metrics(self, labels: List[int], predictions: List[int], probabilities: List[List[float]]) -> Dict:
-        """
-        Calculate comprehensive evaluation metrics.
-        Args:
-            labels (List[int]): True labels.
-            predictions (List[int]): Predicted labels.
-            probabilities (List[List[float]]): Model output probabilities.
-        Returns:
-            Dict: Metrics dictionary.
-        """
+        """Calculate comprehensive evaluation metrics."""
         labels = np.array(labels)
         predictions = np.array(predictions)
         probabilities = np.array(probabilities)
@@ -152,8 +132,7 @@ class ModelEvaluator:
                 auc_score = roc_auc_score(labels, probabilities[:, 1])
             else:  # Multiclass case
                 auc_score = roc_auc_score(labels_binarized, probabilities, multi_class='ovr', average='macro')
-        except Exception as e:
-            self.logger.warning(f"AUC calculation failed: {e}")
+        except:
             auc_score = 0.0
         
         # Classification report

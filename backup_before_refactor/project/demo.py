@@ -14,7 +14,6 @@ from pathlib import Path
 import argparse
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-import logging
 
 from models.rgb_branch import create_rgb_branch
 from models.fusion_model import create_fusion_model
@@ -22,69 +21,84 @@ from scripts.simulate_thermal import ThermalSimulator
 
 
 class MangoClassificationDemo:
-    """
-    Demo class for mango fruit disease classification.
-    """
-    def __init__(self, rgb_model_path: str, fusion_model_path: str = None, device: str = 'auto') -> None:
+    """Demo class for mango fruit disease classification."""
+    
+    def __init__(self, 
+                 rgb_model_path: str,
+                 fusion_model_path: str = None,
+                 device: str = 'auto'):
         """
         Initialize the demo with trained models.
+        
         Args:
-            rgb_model_path (str): Path to trained RGB model
-            fusion_model_path (str, optional): Path to trained fusion model
-            device (str): Device to use ('auto', 'cpu', 'cuda')
+            rgb_model_path: Path to trained RGB model
+            fusion_model_path: Path to trained fusion model (optional)
+            device: Device to use ('auto', 'cpu', 'cuda')
         """
-        self.logger = logging.getLogger("MangoClassificationDemo")
-        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
         # Setup device
         if device == 'auto':
             self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         else:
             self.device = torch.device(device)
-        self.logger.info(f"\U0001F527 Using device: {self.device}")
+        
+        print(f"🔧 Using device: {self.device}")
+        
         # Class names
         self.class_names = ['Healthy', 'Anthracnose', 'Alternaria', 'Black Mould Rot', 'Stem and Rot']
+        
         # Load RGB model
         self.rgb_model = self._load_model(rgb_model_path, 'rgb')
-        self.logger.info(f"\u2705 Loaded RGB model from {rgb_model_path}")
+        print(f"✅ Loaded RGB model from {rgb_model_path}")
+        
         # Load fusion model if provided
         self.fusion_model = None
         self.thermal_simulator = None
         if fusion_model_path:
             self.fusion_model = self._load_model(fusion_model_path, 'fusion')
-            self.logger.info(f"\u2705 Loaded fusion model from {fusion_model_path}")
+            print(f"✅ Loaded fusion model from {fusion_model_path}")
+            
             # Initialize thermal simulator
             self.thermal_simulator = ThermalSimulator(
                 lesion_model_path='dummy_path.pth',  # Uses demo model
                 device=self.device
             )
+        
         # Image preprocessing
         self.preprocess = transforms.Compose([
             transforms.Resize((224, 224)),
             transforms.ToTensor(),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], 
+                               std=[0.229, 0.224, 0.225])
         ])
+        
         self.thermal_preprocess = transforms.Compose([
             transforms.Resize((224, 224)),
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.5], std=[0.5])
         ])
+    
     def _load_model(self, model_path: str, model_type: str):
-        """
-        Load a trained model.
-        Args:
-            model_path (str): Path to model checkpoint.
-            model_type (str): 'rgb' or 'fusion'.
-        Returns:
-            torch.nn.Module: Loaded model.
-        """
+        """Load a trained model."""
         checkpoint = torch.load(model_path, map_location=self.device)
+        
         if model_type == 'rgb':
-            model = create_rgb_branch(num_classes=5, backbone='resnet18', feature_dim=512)
-        else:
-            model = create_fusion_model(num_classes=5, feature_dim=512, use_acoustic=False, fusion_type='attention')
+            model = create_rgb_branch(
+                num_classes=5,
+                backbone='resnet18',
+                feature_dim=512
+            )
+        else:  # fusion
+            model = create_fusion_model(
+                num_classes=5,
+                feature_dim=512,
+                use_acoustic=False,
+                fusion_type='attention'
+            )
+        
         model.load_state_dict(checkpoint['model_state_dict'])
         model.to(self.device)
         model.eval()
+        
         return model
     
     def predict_rgb(self, image_path: str):

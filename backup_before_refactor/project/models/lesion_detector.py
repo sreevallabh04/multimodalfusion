@@ -9,7 +9,6 @@ import torch.nn.functional as F
 import timm
 from typing import Tuple, Optional
 import numpy as np
-import logging
 
 
 class LesionDetector(nn.Module):
@@ -22,18 +21,8 @@ class LesionDetector(nn.Module):
                  num_classes: int = 8,
                  backbone: str = 'resnet18',
                  pretrained: bool = True,
-                 dropout_rate: float = 0.3) -> None:
-        """
-        Args:
-            num_classes (int): Number of leaf disease classes
-            backbone (str): Backbone architecture name
-            pretrained (bool): Whether to use pretrained weights
-            dropout_rate (float): Dropout rate for regularization
-        """
+                 dropout_rate: float = 0.3):
         super(LesionDetector, self).__init__()
-        
-        self.logger = logging.getLogger("LesionDetector")
-        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
         
         self.num_classes = num_classes
         self.backbone_name = backbone
@@ -76,10 +65,8 @@ class LesionDetector(nn.Module):
         
         self._initialize_weights()
     
-    def _initialize_weights(self) -> None:
-        """
-        Initialize model weights.
-        """
+    def _initialize_weights(self):
+        """Initialize model weights."""
         for m in [self.classifier, self.attention]:
             for module in m.modules():
                 if isinstance(module, nn.Conv2d):

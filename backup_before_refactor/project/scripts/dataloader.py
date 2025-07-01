@@ -17,8 +17,6 @@ import albumentations as A
 from albumentations.pytorch import ToTensorV2
 from sklearn.preprocessing import LabelEncoder
 import pandas as pd
-import logging
-from collections import Counter
 
 
 class MultiModalMangoDataset(Dataset):
@@ -35,19 +33,19 @@ class MultiModalMangoDataset(Dataset):
                  image_size: int = 224,
                  use_acoustic: bool = False,
                  acoustic_data_path: Optional[str] = None,
-                 transform_type: str = 'train') -> None:
+                 transform_type: str = 'train'):
         """
         Args:
-            rgb_data_path (str): Path to RGB fruit images
-            thermal_data_path (str): Path to thermal maps
-            split (str): Data split ('train', 'val', 'test')
-            image_size (int): Input image size
-            use_acoustic (bool): Whether to include acoustic/texture features
-            acoustic_data_path (Optional[str]): Path to acoustic maps (if use_acoustic=True)
-            transform_type (str): Type of transforms ('train', 'val', 'test')
+            rgb_data_path: Path to RGB fruit images
+            thermal_data_path: Path to thermal maps
+            split: Data split ('train', 'val', 'test')
+            image_size: Input image size
+            use_acoustic: Whether to include acoustic/texture features
+            acoustic_data_path: Path to acoustic maps (if use_acoustic=True)
+            transform_type: Type of transforms ('train', 'val', 'test')
         """
         self.rgb_data_path = Path(rgb_data_path)
-        self.thermal_data_path = Path(thermal_data_path)
+        self.thermal_data_path = Path(thermal_data_path) / 'thermal'
         self.split = split
         self.image_size = image_size
         self.use_acoustic = use_acoustic
@@ -68,34 +66,25 @@ class MultiModalMangoDataset(Dataset):
         if self.use_acoustic:
             self.acoustic_transform = self._get_advanced_acoustic_transforms(transform_type)
         
-        self.logger = logging.getLogger("MultiModalMangoDataset")
-        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-        self.logger.info(f"Loaded {len(self.data_samples)} samples for {split} split")
+        print(f"✅ Loaded {len(self.data_samples)} samples for {split} split")
         self._print_class_distribution()
     
     def _load_data_paths(self) -> List[Dict]:
-        """
-        Load paths for RGB, thermal, and acoustic data.
-        Returns:
-            List[Dict]: List of sample dictionaries.
-        """
+        """Load paths for RGB, thermal, and acoustic data."""
         samples = []
         
         rgb_split_path = self.rgb_data_path / self.split
         thermal_split_path = self.thermal_data_path / self.split
         
-        # Debug: Print/log the absolute path being checked
-        abs_rgb_split_path = rgb_split_path.resolve()
-        print(f"[DEBUG] Checking existence of RGB split path: {abs_rgb_split_path}")
-        if not abs_rgb_split_path.exists():
-            raise FileNotFoundError(f"RGB data path not found: {abs_rgb_split_path}")
+        if not rgb_split_path.exists():
+            raise FileNotFoundError(f"RGB data path not found: {rgb_split_path}")
         
         for class_name in self.class_names:
             rgb_class_path = rgb_split_path / class_name
             thermal_class_path = thermal_split_path / class_name
             
             if not rgb_class_path.exists():
-                self.logger.warning(f"\u26a0\ufe0f  RGB class path not found: {rgb_class_path}")
+                print(f"⚠️  RGB class path not found: {rgb_class_path}")
                 continue
             
             # Get RGB image paths
@@ -283,7 +272,7 @@ class MultiModalMangoDataset(Dataset):
             
             return image
         except Exception as e:
-            self.logger.warning(f"\u26a0\ufe0f  Error loading {image_path}: {e}")
+            print(f"⚠️  Error loading {image_path}: {e}")
             if is_grayscale:
                 return np.zeros((self.image_size, self.image_size), dtype=np.uint8)
             else:
@@ -381,13 +370,15 @@ class MultiModalMangoDataset(Dataset):
         return acoustic_map
     
     def _print_class_distribution(self):
-        """Print the distribution of classes in the dataset."""
-        class_counts = Counter([sample['label'] for sample in self.data_samples])
+        """Print class distribution for this split."""
+        class_counts = {}
+        for sample in self.data_samples:
+            class_name = sample['label']
+            class_counts[class_name] = class_counts.get(class_name, 0) + 1
         
-        # Remove emoji from logging messages
-        self.logger.info(f"\nClass distribution for {self.split} split:")
+        print(f"\n📊 Class distribution for {self.split} split:")
         for class_name, count in class_counts.items():
-            self.logger.info(f"  {class_name}: {count} samples")
+            print(f"  {class_name}: {count} samples")
     
     def __len__(self) -> int:
         return len(self.data_samples)
@@ -483,35 +474,27 @@ def create_dataloaders(rgb_data_path: str,
     for split, dataset in datasets.items():
         shuffle = (split == 'train')
         
-        # Build DataLoader kwargs dynamically to avoid invalid arguments
-        loader_kwargs = {
-            'dataset': dataset,
-            'batch_size': batch_size,
-            'shuffle': shuffle,
-            'num_workers': num_workers,
-            'pin_memory': torch.cuda.is_available(),
-            'drop_last': (split == 'train'),
-            'persistent_workers': True if num_workers > 0 else False,
-        }
-
-        # prefetch_factor is only valid when num_workers > 0 (multiprocessing)
-        if num_workers > 0:
-            loader_kwargs['prefetch_factor'] = 2
-
-        dataloaders[split] = DataLoader(**loader_kwargs)
+        dataloaders[split] = DataLoader(
+            dataset,
+            batch_size=batch_size,
+            shuffle=shuffle,
+            num_workers=num_workers,
+            pin_memory=torch.cuda.is_available(),
+            drop_last=(split == 'train'),
+            persistent_workers=True if num_workers > 0 else False,
+            prefetch_factor=2 if num_workers > 0 else 2
+        )
     
-    dataloaders['logger'] = logging.getLogger("create_dataloaders")
-    dataloaders['logger'].info(f"\nCreated enhanced dataloaders:")
+    print(f"\n✅ Created enhanced dataloaders:")
     for split, dataloader in dataloaders.items():
-        if split != 'logger':
-            dataloaders['logger'].info(f"  {split}: {len(dataloader)} batches, {len(dataloader.dataset)} samples")
+        print(f"  {split}: {len(dataloader)} batches, {len(dataloader.dataset)} samples")
     
     return dataloaders
 
 
 def test_dataloader():
     """Test the multi-modal dataloader."""
-    dataloaders['logger'].info("🧪 Testing Multi-Modal Dataloader...")
+    print("🧪 Testing Multi-Modal Dataloader...")
     
     # Test parameters
     rgb_data_path = "data/processed/fruit"
@@ -535,20 +518,20 @@ def test_dataloader():
         
         if use_acoustic:
             rgb_batch, thermal_batch, acoustic_batch, labels = batch
-            dataloaders['logger'].info(f"RGB batch shape: {rgb_batch.shape}")
-            dataloaders['logger'].info(f"Thermal batch shape: {thermal_batch.shape}")
-            dataloaders['logger'].info(f"Acoustic batch shape: {acoustic_batch.shape}")
-            dataloaders['logger'].info(f"Labels shape: {labels.shape}")
+            print(f"RGB batch shape: {rgb_batch.shape}")
+            print(f"Thermal batch shape: {thermal_batch.shape}")
+            print(f"Acoustic batch shape: {acoustic_batch.shape}")
+            print(f"Labels shape: {labels.shape}")
         else:
             rgb_batch, thermal_batch, labels = batch
-            dataloaders['logger'].info(f"RGB batch shape: {rgb_batch.shape}")
-            dataloaders['logger'].info(f"Thermal batch shape: {thermal_batch.shape}")
-            dataloaders['logger'].info(f"Labels shape: {labels.shape}")
+            print(f"RGB batch shape: {rgb_batch.shape}")
+            print(f"Thermal batch shape: {thermal_batch.shape}")
+            print(f"Labels shape: {labels.shape}")
         
-        dataloaders['logger'].info("✅ Dataloader test passed!")
+        print("✅ Dataloader test passed!")
         
     except Exception as e:
-        dataloaders['logger'].error(f"❌ Dataloader test failed: {e}")
+        print(f"❌ Dataloader test failed: {e}")
 
 
 if __name__ == "__main__":

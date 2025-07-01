@@ -9,7 +9,6 @@ import torch.nn.functional as F
 import timm
 from typing import Tuple, Optional
 import numpy as np
-import logging
 
 
 class RGBBranch(nn.Module):
@@ -23,18 +22,17 @@ class RGBBranch(nn.Module):
                  backbone: str = 'resnet18',
                  pretrained: bool = True,
                  dropout_rate: float = 0.3,
-                 feature_dim: int = 512) -> None:
+                 feature_dim: int = 512):
         """
         Args:
-            num_classes (int): Number of fruit disease classes
-            backbone (str): Backbone architecture name
-            pretrained (bool): Whether to use pretrained weights
-            dropout_rate (float): Dropout rate for regularization
-            feature_dim (int): Dimension of feature vector for fusion
+            num_classes: Number of fruit disease classes
+            backbone: Backbone architecture name
+            pretrained: Whether to use pretrained weights
+            dropout_rate: Dropout rate for regularization
+            feature_dim: Dimension of feature vector for fusion
         """
         super(RGBBranch, self).__init__()
-        self.logger = logging.getLogger("RGBBranch")
-        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+        
         self.num_classes = num_classes
         self.backbone_name = backbone
         self.feature_dim = feature_dim

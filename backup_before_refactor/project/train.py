@@ -12,7 +12,6 @@ import json
 import time
 from datetime import datetime
 import random
-from typing import Any, Dict, List, Optional, Tuple
 
 import torch
 import torch.optim as optim
@@ -31,23 +30,12 @@ from scripts.dataloader import create_dataloaders
 
 
 class MixupAugmentation:
-    """
-    Mixup augmentation for improved generalization.
-    Args:
-        alpha (float): Mixup interpolation coefficient.
-    """
-    def __init__(self, alpha: float = 0.2) -> None:
+    """Mixup augmentation for improved generalization."""
+    
+    def __init__(self, alpha: float = 0.2):
         self.alpha = alpha
     
-    def __call__(self, batch: torch.Tensor, labels: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, float]:
-        """
-        Apply mixup augmentation to a batch.
-        Args:
-            batch (torch.Tensor): Input batch.
-            labels (torch.Tensor): Corresponding labels.
-        Returns:
-            Tuple of mixed batch, y_a, y_b, and lambda.
-        """
+    def __call__(self, batch, labels):
         if self.alpha > 0:
             lam = np.random.beta(self.alpha, self.alpha)
         else:
@@ -61,21 +49,14 @@ class MixupAugmentation:
         
         return mixed_batch, y_a, y_b, lam
     
-    def mixup_criterion(self, criterion: Any, pred: torch.Tensor, y_a: torch.Tensor, y_b: torch.Tensor, lam: float) -> torch.Tensor:
-        """
-        Compute mixup loss.
-        """
+    def mixup_criterion(self, criterion, pred, y_a, y_b, lam):
         return lam * criterion(pred, y_a) + (1 - lam) * criterion(pred, y_b)
 
 
 class AdvancedTrainingLogger:
-    """
-    Enhanced logging with more metrics tracking.
-    Args:
-        log_dir (str): Directory for log files.
-        experiment_name (str): Name of the experiment.
-    """
-    def __init__(self, log_dir: str, experiment_name: str) -> None:
+    """Enhanced logging with more metrics tracking."""
+    
+    def __init__(self, log_dir: str, experiment_name: str):
         self.log_dir = Path(log_dir)
         self.log_dir.mkdir(parents=True, exist_ok=True)
         
@@ -92,7 +73,7 @@ class AdvancedTrainingLogger:
         self.logger = logging.getLogger()
         
         # Enhanced training history
-        self.history: Dict[str, List[Any]] = {
+        self.history = {
             'train_loss': [],
             'train_acc': [],
             'val_loss': [],
@@ -103,10 +84,8 @@ class AdvancedTrainingLogger:
             'recall': []
         }
     
-    def log_epoch(self, epoch: int, train_metrics: dict, val_metrics: dict, lr: float) -> None:
-        """
-        Log epoch results with enhanced metrics.
-        """
+    def log_epoch(self, epoch: int, train_metrics: dict, val_metrics: dict, lr: float):
+        """Log epoch results with enhanced metrics."""
         self.history['train_loss'].append(train_metrics['loss'])
         self.history['train_acc'].append(train_metrics['accuracy'])
         self.history['val_loss'].append(val_metrics['loss'])
@@ -128,10 +107,8 @@ class AdvancedTrainingLogger:
             self.logger.info(f"  Val F1: {val_metrics['f1_score']:.4f}")
         self.logger.info(f"  Learning Rate: {lr:.6f}")
     
-    def save_enhanced_plots(self, save_path: str) -> None:
-        """
-        Save enhanced training plots.
-        """
+    def save_enhanced_plots(self, save_path: str):
+        """Save enhanced training plots."""
         fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 12))
         
         epochs = range(1, len(self.history['train_loss']) + 1)
@@ -814,7 +791,7 @@ def main():
     # Enhanced training arguments
     parser.add_argument('--batch_size', type=int, default=32,
                        help='Batch size for training')
-    parser.add_argument('--epochs', type=int, default=50,
+    parser.add_argument('--epochs', type=int, default=150,
                        help='Number of training epochs')
     parser.add_argument('--learning_rate', type=float, default=1e-4,
                        help='Learning rate')
@@ -826,9 +803,9 @@ def main():
                        help='Number of epochs to freeze RGB branch in fusion model')
     
     # Advanced techniques
-    parser.add_argument('--use_mixup', action='store_true', default=True,
+    parser.add_argument('--use_mixup', action='store_true',
                        help='Use mixup augmentation')
-    parser.add_argument('--use_tta', action='store_true', default=True,
+    parser.add_argument('--use_tta', action='store_true',
                        help='Use test-time augmentation')
     parser.add_argument('--seed', type=int, default=42,
                        help='Random seed for reproducibility')
@@ -850,9 +827,8 @@ def main():
     
     args = parser.parse_args()
     
-    # Convert provided data paths to absolute paths to avoid duplication issues
-    args.rgb_data_path = str(Path(args.rgb_data_path).resolve())
-    args.thermal_data_path = str(Path(args.thermal_data_path).resolve())
+    # Change to project directory
+    os.chdir(Path(__file__).parent)
     
     # Print enhanced configuration
     print("🔧 Enhanced Training Configuration:")

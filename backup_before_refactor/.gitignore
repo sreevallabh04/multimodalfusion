@@ -1,0 +1,104 @@
+# Multi-Modal Mango Disease Classification .gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyTorch
+*.pth
+*.pt
+*.ckpt
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Virtual environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.conda/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Model checkpoints and logs (optional - uncomment if you want to exclude)
+# project/models/checkpoints/*.pth
+# project/logs/*.log
+
+# Large dataset files (exclude all datasets, keep only compressed archives)
+project/data/fruit/
+project/data/leaf/
+project/data/thermal/
+project/data/processed/
+dataset_archives
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.out
+
+# Training outputs
+wandb/
+.neptune/
+mlruns/
+
+# Compressed files (exclude if you create zips locally)
+*.zip
+*.tar.gz
+*.7z
+
+# Results and outputs that change frequently
+project/evaluation_results/*.png
+project/evaluation_results/*.json
+project/logs/*.log
+project/models/checkpoints/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/ 

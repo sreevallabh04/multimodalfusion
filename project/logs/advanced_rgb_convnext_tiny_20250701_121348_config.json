@@ -1,0 +1,30 @@
+{
+  "experiment_name": "advanced_rgb_convnext_tiny_20250701_121348",
+  "model_type": "advanced_rgb_baseline",
+  "best_val_acc": 84.92063492063492,
+  "best_f1_score": 0.8564048886708985,
+  "training_time": 9912.528055906296,
+  "args": {
+    "rgb_data_path": "data/processed/fruit",
+    "thermal_data_path": "data/thermal",
+    "image_size": 224,
+    "backbone": "convnext_tiny",
+    "feature_dim": 512,
+    "fusion_type": "advanced_attention",
+    "use_acoustic": false,
+    "batch_size": 16,
+    "epochs": 30,
+    "learning_rate": 0.0001,
+    "weight_decay": 0.0001,
+    "patience": 10,
+    "freeze_rgb_epochs": 15,
+    "use_mixup": false,
+    "use_tta": false,
+    "seed": 42,
+    "num_workers": 4,
+    "model_save_dir": "models/checkpoints",
+    "log_dir": "logs",
+    "train_mode": "rgb_only",
+    "skip_rgb_pretrain": false
+  }
+}

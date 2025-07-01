@@ -1,0 +1,28 @@
+{
+  "experiment_name": "rgb_baseline_resnet50_20250621_161135",
+  "model_type": "rgb_baseline",
+  "best_val_acc": 88.0952380952381,
+  "test_acc": 91.26984126984127,
+  "training_time": 7812.5473918914795,
+  "args": {
+    "rgb_data_path": "data/processed/fruit",
+    "thermal_data_path": "data/thermal",
+    "image_size": 224,
+    "backbone": "resnet50",
+    "feature_dim": 512,
+    "fusion_type": "attention",
+    "use_acoustic": false,
+    "batch_size": 32,
+    "epochs": 50,
+    "learning_rate": 0.0005,
+    "weight_decay": 0.0001,
+    "scheduler": "plateau",
+    "patience": 15,
+    "freeze_rgb_epochs": 10,
+    "num_workers": 4,
+    "model_save_dir": "models/checkpoints",
+    "log_dir": "logs",
+    "train_mode": "both",
+    "skip_rgb_pretrain": false
+  }
+}
