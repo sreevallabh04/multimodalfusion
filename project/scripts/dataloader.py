@@ -1,6 +1,7 @@
 """
 Multi-modal dataloader for mango fruit classification.
 Loads RGB images, thermal maps, and optional acoustic/texture maps.
+Enhanced with advanced augmentation techniques for improved accuracy.
 """
 
 import os
@@ -22,6 +23,7 @@ class MultiModalMangoDataset(Dataset):
     """
     Multi-modal dataset for mango fruit classification.
     Loads RGB images, thermal maps, and optional acoustic/texture features.
+    Enhanced with advanced augmentation techniques.
     """
     
     def __init__(self,
@@ -59,10 +61,10 @@ class MultiModalMangoDataset(Dataset):
         self.data_samples = self._load_data_paths()
         
         # Define transforms
-        self.rgb_transform = self._get_rgb_transforms(transform_type)
-        self.thermal_transform = self._get_thermal_transforms()
+        self.rgb_transform = self._get_advanced_rgb_transforms(transform_type)
+        self.thermal_transform = self._get_advanced_thermal_transforms(transform_type)
         if self.use_acoustic:
-            self.acoustic_transform = self._get_acoustic_transforms()
+            self.acoustic_transform = self._get_advanced_acoustic_transforms(transform_type)
         
         print(f"✅ Loaded {len(self.data_samples)} samples for {split} split")
         self._print_class_distribution()
@@ -111,50 +113,145 @@ class MultiModalMangoDataset(Dataset):
         
         return samples
     
-    def _get_rgb_transforms(self, transform_type: str):
-        """Get RGB image transforms."""
+    def _get_advanced_rgb_transforms(self, transform_type: str):
+        """Get advanced RGB image transforms for better accuracy."""
         if transform_type == 'train':
             return A.Compose([
+                # Resize and crop
                 A.Resize(self.image_size, self.image_size),
+                
+                # Basic geometric augmentations
                 A.HorizontalFlip(p=0.5),
                 A.VerticalFlip(p=0.3),
                 A.RandomRotate90(p=0.5),
+                A.Rotate(limit=15, p=0.6),
+                
+                # Photometric augmentations
                 A.OneOf([
-                    A.RandomBrightnessContrast(brightness_limit=0.2, contrast_limit=0.2, p=1.0),
-                    A.HueSaturationValue(hue_shift_limit=20, sat_shift_limit=30, val_shift_limit=20, p=1.0),
-                ], p=0.5),
+                    A.RandomBrightnessContrast(
+                        brightness_limit=0.3, 
+                        contrast_limit=0.3, 
+                        p=1.0
+                    ),
+                    A.HueSaturationValue(
+                        hue_shift_limit=25, 
+                        sat_shift_limit=35, 
+                        val_shift_limit=25, 
+                        p=1.0
+                    ),
+                ], p=0.8),
+                
+                # Noise and blur for robustness
                 A.OneOf([
-                    A.GaussNoise(var_limit=(10.0, 50.0), p=1.0),
+                    A.GaussNoise(p=1.0),
                     A.GaussianBlur(blur_limit=(3, 7), p=1.0),
-                ], p=0.3),
-                A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+                    A.MotionBlur(blur_limit=7, p=1.0),
+                ], p=0.5),
+                
+                # Dropout augmentations
+                A.CoarseDropout(
+                    max_holes=8, 
+                    max_height=32, 
+                    max_width=32, 
+                    p=0.3
+                ),
+                
+                # Advanced normalization
+                A.CLAHE(clip_limit=4.0, tile_grid_size=(8, 8), p=0.3),
+                A.Normalize(
+                    mean=[0.485, 0.456, 0.406], 
+                    std=[0.229, 0.224, 0.225]
+                ),
+                ToTensorV2()
+            ])
+        else:
+            # Test-time augmentation for validation/test
+            return A.Compose([
+                A.Resize(self.image_size, self.image_size),
+                A.CLAHE(clip_limit=2.0, tile_grid_size=(8, 8), p=0.5),
+                A.Normalize(
+                    mean=[0.485, 0.456, 0.406], 
+                    std=[0.229, 0.224, 0.225]
+                ),
+                ToTensorV2()
+            ])
+    
+    def _get_advanced_thermal_transforms(self, transform_type: str):
+        """Get advanced thermal map transforms."""
+        if transform_type == 'train':
+            return A.Compose([
+                A.Resize(self.image_size, self.image_size),
+                
+                # Thermal-specific augmentations
+                A.HorizontalFlip(p=0.5),
+                A.VerticalFlip(p=0.3),
+                A.RandomRotate90(p=0.5),
+                A.Rotate(limit=10, p=0.5),
+                
+                # Thermal noise simulation
+                A.OneOf([
+                    A.GaussNoise(p=1.0),
+                    A.GaussianBlur(blur_limit=(3, 5), p=1.0),
+                ], p=0.4),
+                
+                # Thermal contrast enhancement
+                A.RandomBrightnessContrast(
+                    brightness_limit=0.2, 
+                    contrast_limit=0.3, 
+                    p=0.6
+                ),
+                
+                # Histogram equalization for thermal
+                A.CLAHE(clip_limit=3.0, tile_grid_size=(4, 4), p=0.4),
+                
+                A.Normalize(mean=[0.5], std=[0.5]),
                 ToTensorV2()
             ])
         else:
             return A.Compose([
                 A.Resize(self.image_size, self.image_size),
-                A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+                A.CLAHE(clip_limit=2.0, tile_grid_size=(4, 4), p=0.3),
+                A.Normalize(mean=[0.5], std=[0.5]),
                 ToTensorV2()
             ])
     
-    def _get_thermal_transforms(self):
-        """Get thermal map transforms."""
-        return A.Compose([
-            A.Resize(self.image_size, self.image_size),
-            A.Normalize(mean=[0.5], std=[0.5]),  # Normalize grayscale to [-1, 1]
-            ToTensorV2()
-        ])
-    
-    def _get_acoustic_transforms(self):
-        """Get acoustic/texture map transforms."""
-        return A.Compose([
-            A.Resize(self.image_size, self.image_size),
-            A.Normalize(mean=[0.5], std=[0.5]),
-            ToTensorV2()
-        ])
+    def _get_advanced_acoustic_transforms(self, transform_type: str):
+        """Get advanced acoustic/texture map transforms."""
+        if transform_type == 'train':
+            return A.Compose([
+                A.Resize(self.image_size, self.image_size),
+                
+                # Acoustic-specific augmentations
+                A.HorizontalFlip(p=0.5),
+                A.VerticalFlip(p=0.3),
+                A.RandomRotate90(p=0.5),
+                A.Rotate(limit=5, p=0.4),
+                
+                # Texture enhancement
+                A.RandomBrightnessContrast(
+                    brightness_limit=0.15, 
+                    contrast_limit=0.25, 
+                    p=0.5
+                ),
+                
+                # Texture noise
+                A.OneOf([
+                    A.GaussNoise(p=1.0),
+                    A.GaussianBlur(blur_limit=(3, 5), p=1.0),
+                ], p=0.3),
+                
+                A.Normalize(mean=[0.5], std=[0.5]),
+                ToTensorV2()
+            ])
+        else:
+            return A.Compose([
+                A.Resize(self.image_size, self.image_size),
+                A.Normalize(mean=[0.5], std=[0.5]),
+                ToTensorV2()
+            ])
     
     def _load_image(self, image_path: str, is_grayscale: bool = False) -> np.ndarray:
-        """Load and preprocess image."""
+        """Load and preprocess image with enhanced error handling."""
         if not os.path.exists(image_path):
             # Return black image if file doesn't exist
             if is_grayscale:
@@ -162,27 +259,38 @@ class MultiModalMangoDataset(Dataset):
             else:
                 return np.zeros((self.image_size, self.image_size, 3), dtype=np.uint8)
         
-        if is_grayscale:
-            image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-        else:
-            image = cv2.imread(image_path)
-            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        
-        return image
+        try:
+            if is_grayscale:
+                image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+                if image is None:
+                    return np.zeros((self.image_size, self.image_size), dtype=np.uint8)
+            else:
+                image = cv2.imread(image_path)
+                if image is None:
+                    return np.zeros((self.image_size, self.image_size, 3), dtype=np.uint8)
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+            
+            return image
+        except Exception as e:
+            print(f"⚠️  Error loading {image_path}: {e}")
+            if is_grayscale:
+                return np.zeros((self.image_size, self.image_size), dtype=np.uint8)
+            else:
+                return np.zeros((self.image_size, self.image_size, 3), dtype=np.uint8)
     
-    def _generate_acoustic_map(self, rgb_image: np.ndarray) -> np.ndarray:
+    def _generate_enhanced_acoustic_map(self, rgb_image: np.ndarray) -> np.ndarray:
         """
-        Generate pseudo-acoustic map based on surface texture.
-        Uses Histogram of Oriented Gradients (HOG) and Local Binary Patterns (LBP).
+        Generate enhanced pseudo-acoustic map with improved texture analysis.
+        Uses multiple texture descriptors and surface analysis techniques.
         """
         # Convert to grayscale for texture analysis
         gray = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2GRAY) if len(rgb_image.shape) == 3 else rgb_image
         
-        # Calculate Local Binary Patterns for texture
-        def local_binary_pattern(image, P=8, R=1):
-            """Simple LBP implementation."""
+        # Enhanced Local Binary Patterns
+        def enhanced_lbp(image, P=24, R=3):
+            """Enhanced LBP with more sampling points."""
             height, width = image.shape
-            lbp = np.zeros_like(image)
+            lbp = np.zeros_like(image, dtype=np.float32)
             
             for i in range(R, height - R):
                 for j in range(R, width - R):
@@ -199,29 +307,62 @@ class MultiModalMangoDataset(Dataset):
             
             return lbp
         
-        # Calculate texture features
-        lbp = local_binary_pattern(gray)
+        # Calculate multiple texture features
+        lbp = enhanced_lbp(gray)
         
-        # Calculate gradient magnitude for firmness simulation
-        grad_x = cv2.Sobel(gray, cv2.CV_64F, 1, 0, ksize=3)
-        grad_y = cv2.Sobel(gray, cv2.CV_64F, 0, 1, ksize=3)
+        # Enhanced gradient analysis
+        grad_x = cv2.Sobel(gray, cv2.CV_64F, 1, 0, ksize=5)
+        grad_y = cv2.Sobel(gray, cv2.CV_64F, 0, 1, ksize=5)
         gradient_magnitude = np.sqrt(grad_x**2 + grad_y**2)
+        gradient_direction = np.arctan2(grad_y, grad_x)
         
-        # Combine features to simulate acoustic properties
-        # High texture variation = softer fruit (higher acoustic response)
-        texture_variation = cv2.GaussianBlur(lbp.astype(np.float32), (5, 5), 0)
-        gradient_smooth = cv2.GaussianBlur(gradient_magnitude.astype(np.float32), (5, 5), 0)
+        # Laplacian for surface roughness
+        laplacian = cv2.Laplacian(gray, cv2.CV_64F, ksize=5)
+        laplacian_abs = np.abs(laplacian)
         
-        # Normalize and combine
-        texture_norm = (texture_variation - texture_variation.min()) / (texture_variation.max() - texture_variation.min() + 1e-8)
-        gradient_norm = (gradient_smooth - gradient_smooth.min()) / (gradient_smooth.max() - gradient_smooth.min() + 1e-8)
+        # Harris corner detection for surface irregularities
+        corners = cv2.cornerHarris(gray, 2, 3, 0.04)
         
-        # Acoustic map: combination of texture and gradient
-        acoustic_map = 0.6 * texture_norm + 0.4 * gradient_norm
+        # Gabor filters for texture orientation
+        gabor_responses = []
+        for theta in [0, 45, 90, 135]:
+            kernel = cv2.getGaborKernel((21, 21), 5, np.radians(theta), 2*np.pi*0.5, 0.5, 0, ktype=cv2.CV_32F)
+            gabor_response = cv2.filter2D(gray.astype(np.float32), cv2.CV_8UC3, kernel)
+            gabor_responses.append(gabor_response)
         
-        # Add some noise for realism
-        noise = np.random.normal(0, 0.05, acoustic_map.shape)
+        gabor_energy = np.sqrt(sum([resp**2 for resp in gabor_responses]))
+        
+        # Combine all features with learned weights
+        # These weights simulate acoustic properties based on texture
+        features = [
+            (lbp, 0.25),           # Surface texture
+            (gradient_magnitude, 0.20),  # Edge strength
+            (laplacian_abs, 0.15),       # Surface roughness
+            (corners, 0.15),             # Surface irregularities
+            (gabor_energy, 0.25)         # Texture orientation
+        ]
+        
+        # Normalize and combine features
+        acoustic_map = np.zeros_like(gray, dtype=np.float32)
+        for feature, weight in features:
+            # Gaussian smoothing for realistic acoustic propagation
+            feature_smooth = cv2.GaussianBlur(feature.astype(np.float32), (7, 7), 2.0)
+            
+            # Normalize feature
+            if feature_smooth.max() > feature_smooth.min():
+                feature_norm = (feature_smooth - feature_smooth.min()) / (feature_smooth.max() - feature_smooth.min())
+            else:
+                feature_norm = np.zeros_like(feature_smooth)
+            
+            acoustic_map += weight * feature_norm
+        
+        # Add realistic acoustic noise
+        noise_level = 0.05
+        noise = np.random.normal(0, noise_level, acoustic_map.shape)
         acoustic_map = np.clip(acoustic_map + noise, 0, 1)
+        
+        # Apply acoustic wave propagation simulation
+        acoustic_map = cv2.GaussianBlur(acoustic_map, (5, 5), 1.5)
         
         # Convert to uint8
         acoustic_map = (acoustic_map * 255).astype(np.uint8)
@@ -244,7 +385,7 @@ class MultiModalMangoDataset(Dataset):
     
     def __getitem__(self, idx: int) -> Tuple[torch.Tensor, ...]:
         """
-        Get a sample from the dataset.
+        Get a sample from the dataset with enhanced preprocessing.
         
         Returns:
             Tuple containing (rgb_tensor, thermal_tensor, [acoustic_tensor], label)
@@ -264,12 +405,12 @@ class MultiModalMangoDataset(Dataset):
         label = torch.tensor(sample['class_idx'], dtype=torch.long)
         
         if self.use_acoustic:
-            # Load or generate acoustic map
+            # Load or generate enhanced acoustic map
             if self.acoustic_data_path and sample.get('acoustic_path') and os.path.exists(sample['acoustic_path']):
                 acoustic_image = self._load_image(sample['acoustic_path'], is_grayscale=True)
             else:
-                # Generate acoustic map from RGB image
-                acoustic_image = self._generate_acoustic_map(rgb_image)
+                # Generate enhanced acoustic map from RGB image
+                acoustic_image = self._generate_enhanced_acoustic_map(rgb_image)
             
             acoustic_tensor = self.acoustic_transform(image=acoustic_image)['image']
             return rgb_tensor, thermal_tensor, acoustic_tensor, label
@@ -282,9 +423,9 @@ class MultiModalMangoDataset(Dataset):
         for sample in self.data_samples:
             class_counts[sample['class_idx']] += 1
         
-        # Inverse frequency weighting
+        # Inverse frequency weighting with smoothing
         total_samples = len(self.data_samples)
-        weights = total_samples / (self.num_classes * class_counts)
+        weights = total_samples / (self.num_classes * class_counts + 1e-6)
         weights = weights / weights.sum() * self.num_classes  # Normalize
         
         return torch.FloatTensor(weights)
@@ -298,7 +439,7 @@ def create_dataloaders(rgb_data_path: str,
                       use_acoustic: bool = False,
                       acoustic_data_path: Optional[str] = None) -> Dict[str, DataLoader]:
     """
-    Create train, validation, and test dataloaders.
+    Create enhanced train, validation, and test dataloaders.
     
     Args:
         rgb_data_path: Path to RGB fruit images
@@ -328,7 +469,7 @@ def create_dataloaders(rgb_data_path: str,
             transform_type=transform_type
         )
     
-    # Create dataloaders
+    # Create dataloaders with enhanced configurations
     dataloaders = {}
     for split, dataset in datasets.items():
         shuffle = (split == 'train')
@@ -339,10 +480,12 @@ def create_dataloaders(rgb_data_path: str,
             shuffle=shuffle,
             num_workers=num_workers,
             pin_memory=torch.cuda.is_available(),
-            drop_last=(split == 'train')
+            drop_last=(split == 'train'),
+            persistent_workers=True if num_workers > 0 else False,
+            prefetch_factor=2 if num_workers > 0 else 2
         )
     
-    print(f"\n✅ Created dataloaders:")
+    print(f"\n✅ Created enhanced dataloaders:")
     for split, dataloader in dataloaders.items():
         print(f"  {split}: {len(dataloader)} batches, {len(dataloader.dataset)} samples")
     
