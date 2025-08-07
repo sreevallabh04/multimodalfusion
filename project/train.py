@@ -242,27 +242,40 @@ class TestTimeAugmentation:
         all_predictions = []
         all_labels = []
         
+        # Check if model is RGB-only or fusion model
+        is_rgb_only = hasattr(model, 'backbone_name') and 'rgb' in model.__class__.__name__.lower()
+        
         with torch.no_grad():
             for _ in range(self.num_tta):
                 batch_predictions = []
                 batch_labels = []
                 
                 for batch in dataloader:
-                    if len(batch) == 4:  # With acoustic
-                        rgb_images, thermal_images, acoustic_images, labels = batch
-                        rgb_images = rgb_images.to(device)
-                        thermal_images = thermal_images.to(device)
-                        acoustic_images = acoustic_images.to(device)
-                        labels = labels.to(device)
-                        
-                        outputs = model(rgb_images, thermal_images, acoustic_images)
-                    else:  # Without acoustic
-                        rgb_images, thermal_images, labels = batch
-                        rgb_images = rgb_images.to(device)
-                        thermal_images = thermal_images.to(device)
-                        labels = labels.to(device)
-                        
-                        outputs = model(rgb_images, thermal_images)
+                    if is_rgb_only:
+                        # RGB-only model - only use RGB images
+                        if len(batch) >= 2:  # RGB + labels (and possibly thermal/acoustic)
+                            rgb_images = batch[0].to(device)
+                            labels = batch[-1].to(device)  # Last element is always labels
+                            outputs = model(rgb_images)
+                        else:
+                            continue
+                    else:
+                        # Fusion model - use RGB + thermal (and possibly acoustic)
+                        if len(batch) == 4:  # With acoustic
+                            rgb_images, thermal_images, acoustic_images, labels = batch
+                            rgb_images = rgb_images.to(device)
+                            thermal_images = thermal_images.to(device)
+                            acoustic_images = acoustic_images.to(device)
+                            labels = labels.to(device)
+                            
+                            outputs = model(rgb_images, thermal_images, acoustic_images)
+                        else:  # Without acoustic
+                            rgb_images, thermal_images, labels = batch
+                            rgb_images = rgb_images.to(device)
+                            thermal_images = thermal_images.to(device)
+                            labels = labels.to(device)
+                            
+                            outputs = model(rgb_images, thermal_images)
                     
                     probabilities = F.softmax(outputs, dim=1)
                     batch_predictions.append(probabilities.cpu())
