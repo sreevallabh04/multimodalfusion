@@ -1,0 +1,103 @@
+Reviewer-1
+Reviewer 1: Doesn't the AUC value of 0.25 reported in Figure 12 mean that the model
+performs even worse than random prediction? Please resolve the discrepancy between the
+97% success rate mentioned in the text and this visual.
+Author’s response:
+We thank the reviewer for highlighting this important inconsistency. The AUC value of 0.25
+reported in the earlier version of Figure 12 was due to an error in the plotting/labeling of the
+ROC curve and did not reflect the actual model performance. After re-examining the evaluation
+process, we have corrected the ROC computation and updated Figure 8 in the revised
+manuscript. The corrected figure now reports an average macro-ROC AUC of 0.94 across the
+five folds, which is consistent with the 97% classification accuracy discussed in the text. This
+confirms that the model performs substantially better than random prediction. The discrepancy
+has been resolved, and both the figure and the corresponding description have been updated
+to ensure consistency and clarity.
+---------------------------------------------------------------------------------------------------------------------------
+-
+Reviewer 1: In some experiments, perfect accuracy rates of 99.99% were achieved. This
+raises the question of whether different leaf images from the same plant are distributed
+between the training and validation sets during data separation. Please clarify the data
+separation.
+Author’s response:
+We thank the reviewer for highlighting this important concern regarding potential data leakage,
+particularly in light of the high accuracy values reported. We would like to clarify that data
+separation in this study was performed strictly at the plant level, not at the individual image
+level. All leaf images originating from the same coffee plant were assigned exclusively to either
+the training or the validation set and were never shared between them. As a result, the
+validation set consisted entirely of images from previously unseen plants, ensuring a fair and
+unbiased evaluation of the models’ generalization capability. This plant-level separation
+strategy was applied consistently across both the standard 80/20 train–validation split and the
+K-fold cross-validation experiments. Therefore, the high accuracy values observed are not
+attributable to overlap between training and validation data, but reflect the effectiveness of the
+proposed preprocessing pipeline, feature extraction strategy, and model architectures. This
+clarification has now been explicitly added into section 4.2 of the revised manuscript to
+improve transparency and reproducibility.
+---------------------------------------------------------------------------------------------------------------------------
+-
+Reviewer 1: The density of similar expressions (e.g., descriptions of fold performances) in the
+sections discussing the findings makes the text cumbersome. It is recommended that you
+revise these sections using more concise language.
+Author’s response:
+We thank the reviewer for the valuable suggestion. In response, we have revised the relevant
+sections by rewriting them in a more concise and clear manner to reduce repetitive
+expressions. Additionally, a summary table has been added to present the fold-wise
+performance results more clearly and improve overall readability. These changes have been
+incorporated into the revised manuscript in section 4 fully.
+---------------------------------------------------------------------------------------------------------------------------
+-
+Reviewer 1:Supporting your claim that PhytoV2Net is significantly "lighter" than InceptionV3
+(in terms of parameter count or inference time) with quantitative data will strengthen the
+model's suitability for use on edge devices.
+Author’s response:
+We thank the reviewer for the valuable suggestion. To quantitatively support our claim that
+PhytoV2Net is significantly lighter than InceptionV3, we have now included an inference time
+comparison under identical experimental conditions (CPU-based inference with batch size =
+1). As shown in the revised manuscript, PhytoV2Net achieves substantially lower inference
+time per image compared to InceptionV3, demonstrating its computational efficiency. Together
+with the reduced parameter count, this quantitative evidence confirms the suitability of
+PhytoV2Net for deployment on resource-constrained and edge devices. The corresponding
+figure and discussion have been added to the revised manuscript under section 4.
+---------------------------------------------------------------------------------------------------------------------------
+-
+Reviewer 1: The text in Figure 1 is too small and hard to read. The arrows should also be
+drawn more clearly. Figure 1 should be revised.
+Author’s response:
+We thank the reviewer for the valuable comment. As suggested, Figure 1 has been revised to
+improve its clarity and readability. The text size has been increased, and the arrows have been
+redrawn more clearly to enhance visual understanding. These modifications have been
+incorporated in the revised manuscript to ensure that Figure 1 is easier to read and interpret.
+---------------------------------------------------------------------------------------------------------------------------
+-
+Reviewer 1: Why did you run your study for only 10 epochs? It is recommended to run it for
+100 epochs and show the results.
+Author’s response:
+We thank the reviewer for the suggestion to extend training to 100 epochs. Accordingly, we
+conducted additional experiments training the model initially up to 25 epochs. The results show
+rapid convergence: both training and validation accuracy exceed 99% within the first 5–8
+epochs, while validation loss reaches a minimum and stabilizes by approximately the 8th–10th
+epoch. Beyond this point, further training yields negligible or no statistically significant
+improvements, with occasional fluctuations in validation loss, indicating performance
+saturation rather than continued learning. Therefore, limiting training to 10 epochs represents
+an empirically justified and computationally efficient choice. We have also attached the
+accuracy curve for 25 epochs for your reference.
+---------------------------------------------------------------------------------------------------------------------------
+-
+Reviewer 1: Instead of providing a complexity matrix for each fold, an average matrix for all 5
+folds could be presented in a single figure. Too many figures have been generated.
+Author’s response:
+We thank the reviewer for the insightful suggestion. In response, we have consolidated the
+complexity matrices from all five folds by computing and presenting an average complexity
+matrix in a single figure for both the figures. This revision reduces the number of figures and
+improves the clarity and conciseness of the results presentation. The updated figures have
+been updated and have been included in the revised manuscript under Section 4, for both the
+models with figure numbers 6 and 11.
+---------------------------------------------------------------------------------------------------------------------------
+-
+Reviewer 1: The literature can be expanded by citing additional studies from 2025.
+Author’s response:
+We thank the reviewer for the valuable suggestion. As recommended, we have expanded the
+literature review by incorporating additional 4 relevant studies published in 2025. These recent
+works have been carefully reviewed and cited to strengthen the background, highlight current
+research trends, and better position our study within the latest developments in the field. The
+updated references and corresponding discussions have been included in the revised
+manuscript, under section 2 and the references have been added in the references section.

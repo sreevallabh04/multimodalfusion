@@ -1,0 +1,39 @@
+The Introduction and Literature Review are currently underdeveloped. While the Introduction outlines the general background, motivation, and research question, it does not adequately engage with recent advancements in the field. Similarly, the Literature Review sections are overly brief and lack critical depth. The authors are encouraged to substantially expand these sections by incorporating and critically discussing more recent studies (preferably up to 2025) to better position their work within the current state of research.
+
+The Methodology and Results sections lack the level of detail required for reproducibility. For instance, the manuscript states that two datasets were used with a 70:20:20 split, but it is unclear whether this split was applied independently to each dataset or to a combined dataset. Furthermore, the presentation of results does not clearly distinguish between datasets, making interpretation difficult. The manuscript also claims that the second dataset serves as a knowledge source for thermal synthesis; however, there is no clear evidence or description indicating that this dataset includes thermal imagery.
+
+In addition, the results are not benchmarked against existing methods. The abstract mentions a 4.8% improvement over a "best" baseline, but the baseline itself is not defined or referenced, which undermines the credibility of this claim.
+
+Overall, the methodology and experimental design require substantial revision and clarification. In its current form, the manuscript does not meet the standards of rigor and transparency necessary for publication.
+The interactive review of your manuscript "Cross-Modal Knowledge Transfer for Cost-Effective Multi-Modal Agricultural Disease Detection" submitted to Frontiers in Agronomy has now been activated.
+
+The reviewers recommended that you make substantial amendments to your manuscript. Please respond within the next 14 days to all comments raised by the reviewers and editor in the online review forum. If a reviewer has finalized the review and discussion on the Reviewer tab is closed, you should submit a reply to pending comments in a new thread in the Editor tab. You can also submit a revised version of your manuscript at that time. We encourage you to submit your documents with tracked changes to highlight the revisions.
+There can be more than one iteration between authors and reviewers, but only when all comments by each reviewer have been addressed successfully can the review be finalized.
+
+Reviewer 1 | 04 Mar 2026 | 11:50#1
+The manuscript mentions generating thermal-like maps from lesion features extracted from leaf images, but the process is not sufficiently explained. The authors should describe:
+The specific feature extraction techniques used
+How lesion features are transformed into thermal-like representations
+Whether any supervised or unsupervised learning approach is used for map generation
+A detailed explanation of this step is necessary because it forms the core contribution of the study.
+The study states that RGB images and generated thermal maps are fused using an attention mechanism, but the architecture and implementation details are unclear. The authors should clarify:
+The type of attention mechanism used
+The deep learning architecture applied
+How the fusion improves disease classification performance
+Providing a block diagram or architectural illustration would greatly improve clarity.
+
+Reviewer 3:
+The paper talks about a cross-modal knowledge transfer for cost-effective multi-modal agricultural disease detection.
+The paper is well presented except that there are minor edit errors.
+Some words are written together and need reediting.
+
+-the abstract is good but the cost-effectiveness is not clear here. Authors should add a line or two to back the cost-effectiveness by for example summary of table 3.
+-the introduction is precise and straight to the point. But if the template allows, maybe the introduction could be merged with the related works.
+-include a flowchart, workflow and block diagram representation of the methodology to provide a pictorial overview for readers similar to figure 2 and 3.
+-the experimental setup is weak. Authors should explain what informed the data size of 32 not 64 and learning rate of 0.001 and not any other. Why 32 epochs?
+A table of comparison would be very useful for fair conclusion
+What is the influence of the flip rotation on results?
+-the section results and analysis is missing table of comparison with other related or state of the art works.
+-the discussion section is limited. Work is limited to only mango disease but topic says agricultural disease detection, which is broader. Maybe topic should be modified for mango disease only.
+
+I recommend acceptance after a major revision of the above stated.
