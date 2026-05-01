@@ -12,6 +12,9 @@
 \usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{graphicx}
+% Project figures/ at repo root (e.g., prism.openai.com: use workspace root as the build directory).
+% Also resolves when running pdflatex from Paper/ or Paper/frontiers/.
+\graphicspath{{./figures/}{../figures/}{../../figures/}}
 \usepackage[section]{placeins}
 \usepackage{textcomp}
 \usepackage[table]{xcolor}
@@ -23,17 +26,22 @@
 \usetikzlibrary{shapes.geometric,arrows,positioning}
 \pgfplotsset{compat=1.18}
 \usepackage{soul}
-\usepackage[framemethod=tikz]{mdframed}
 
-\sethlcolor{yellow}
-\newmdenv[
-  backgroundcolor=yellow!20,
-  linewidth=0pt,
-  innertopmargin=6pt,
-  innerbottommargin=6pt,
-  skipabove=6pt,
-  skipbelow=6pt
-]{revblock}
+% Tracked-changes highlighting:
+% - Prefer short inline highlights only (soul \hl), to avoid large yellow blocks.
+% - revblock is kept as a no-op (older revisions used boxed blocks).
+\sethlcolor{yellow!35}
+\newenvironment{revblock}{}{}
+\soulregister\cite7
+\soulregister\ref7
+\soulregister\eqref7
+\soulregister\url7
+\soulregister\href7
+\soulregister\textit7
+\soulregister\emph7
+\soulregister\textbf7
+\soulregister\textsc7
+\soulregister\texttt7
 
 \linenumbers
 
@@ -49,7 +57,7 @@
 \onecolumn
 \firstpage{1}
 
-\title[Cross-Modal Knowledge Transfer]{Cross-Modal Knowledge Transfer for Cost-Effective \hl{Mango Disease Detection Using Synthetic Thermal Imaging}}
+\title[Cross-Modal Knowledge Transfer]{Cross-Modal Knowledge Transfer for Cost-Effective Mango Disease Detection Using Synthetic Thermal Imaging}
 
 \author[\firstAuthorLast ]{\Authors}
 \address{}
@@ -60,10 +68,10 @@
 
 \begin{abstract}
 \section{}
-Thermal cameras play a crucial role in identifying diseases invisible to regular photographs, but they are prohibitively expensive for many orchards to purchase \hl{(typically exceeding \$25,000)}. We study to what extent the advantages of the thermal signal can be approximated using only RGB data \hl{at zero additional hardware cost}. Our method \hl{trains a supervised lesion detector on a leaf pathology dataset (MangoLeafBD) to learn universal disease manifestation patterns. These learned lesion features are transferred to fruit images and transformed into synthetic thermal-like maps through a physics-informed model that simulates metabolic heat signatures. The synthetic thermal maps are then fused with the original RGB features via a 16-head multi-head attention mechanism that automatically weights disease-relevant cues from both modalities}. In the case of mango disease recognition \hl{across five classes}, the system attains an accuracy of 87.3\%, which is a 4.8\% gain over the best RGB\hl{-only} baseline \hl{(RGB ViT-Base at 85.8\%)}, without involving any additional hardware. \hl{The proposed method achieves approximately 89\% of the performance of a real thermal camera system (93.5\%) while incurring zero hardware cost compared to \$25,000 for thermal cameras or \$50,000 for multi-spectral systems, making it directly deployable on commodity smartphones for low-cost crop health monitoring.}
+Thermal cameras play a crucial role in identifying diseases invisible to regular photographs, but they are prohibitively expensive for many orchards to purchase \hl{(typically exceeding \$25,000)}. We study to what extent the advantages of the thermal signal can be approximated using only RGB data \hl{at zero additional hardware cost}. Our method \hl{trains a supervised lesion detector} on a leaf pathology dataset \hl{(MangoLeafBD)} to learn universal disease manifestation patterns. These learned lesion features are transferred to fruit images and transformed into synthetic thermal-like maps through a \hl{physics-informed} model that simulates metabolic heat signatures. The synthetic thermal maps are then fused with the original RGB features via a \hl{16-head multi-head attention} mechanism that automatically weights disease-relevant cues from both modalities. In the case of mango disease recognition \hl{across five classes}, the system attains an accuracy of 87.3\%, which is a 4.8\% gain over the best RGB\hl{-only} baseline \hl{(RGB ViT-Base at 85.8\%)}, without involving any additional hardware. The proposed method achieves \hl{approximately 89\%} of the performance of a real thermal camera system \hl{(93.5\%)} while incurring \hl{zero hardware cost} compared to \hl{\$25,000} for thermal cameras or \hl{\$50,000} for multi-spectral systems, making it directly deployable on commodity smartphones for low-cost crop health monitoring.
 
 \tiny
- \keyFont{ \section{Keywords:} cross-modal learning, \hl{mango disease detection}, thermal simulation, knowledge transfer, precision agriculture\hl{, attention-based fusion, deep learning}}
+ \keyFont{ \section{Keywords:} cross-modal learning, mango disease detection, thermal simulation, knowledge transfer, precision agriculture, attention-based fusion, deep learning}
 \end{abstract}
 
 \section{Introduction}
@@ -89,20 +97,20 @@ This paper addresses a practical question: can we approximate the diagnostic adv
 \section{Related Work}
 
 \subsection{Multi-Modal Agricultural Sensing}
-\hl{Multi-modal imaging has gained substantial traction for plant disease detection over the past decade} \cite{maimaitijiang2020,\hl{lu2020}}. Thermal sensing measures \hl{tissue} temperature variations, \hl{where} infected areas \hl{exhibit a characteristic} temperature rise of 2--5$^{\circ}$C above the healthy baseline as a result of cell lysis \hl{and disrupted metabolic processes} \cite{mahlein2016}. These heat signatures \hl{serve as} early indicators\hl{, often manifesting} before visual symptoms \hl{become apparent} \cite{pineda2021}. \begin{revblock}Hyperspectral and multi-spectral imaging have also been explored for plant stress detection, with Nagasubramanian et al. \cite{nagasubramanian2019} demonstrating the value of spectral data for soybean disease identification.\end{revblock} Despite the \hl{proven diagnostic} benefits, the high cost \hl{of specialized imaging equipment}---more than \$25,000 \hl{for thermal cameras and upward of \$50,000 for multi-spectral systems}---poses significant \hl{barriers} to \hl{widespread agricultural adoption} \cite{sishodia2020}.
+\hl{Multi-modal imaging has gained substantial traction for plant disease detection over the past decade} \cite{maimaitijiang2020,lu2020}. Thermal sensing measures \hl{tissue} temperature variations, \hl{where} infected areas \hl{exhibit a characteristic} temperature rise of 2--5$^{\circ}$C above the healthy baseline as a result of cell lysis \hl{and disrupted metabolic processes} \cite{mahlein2016}. These heat signatures \hl{serve as} early indicators\hl{, often manifesting} before visual symptoms \hl{become apparent} \cite{pineda2021}. \begin{revblock}Hyperspectral and multi-spectral imaging have also been explored for plant stress detection, with Nagasubramanian et al. \cite{nagasubramanian2019} demonstrating the value of spectral data for soybean disease identification.\end{revblock} Despite the \hl{proven diagnostic} benefits, the high cost \hl{of specialized imaging equipment}---more than \$25,000 \hl{for thermal cameras and upward of \$50,000 for multi-spectral systems}---poses significant \hl{barriers} to \hl{widespread agricultural adoption} \cite{sishodia2020}.
 
-Over the past decade, deep learning has \hl{fundamentally} transformed agricultural computer vision \cite{kamilaris2018\hl{,coulibaly2022}}. Convolutional networks and vision transformers produce high-dimensional feature representations from RGB images \hl{that capture subtle visual patterns indicative of disease} \cite{dosovitskiy2021\hl{,liu2022convnext}}. \begin{revblock}Thakur et al. \cite{thakur2022} provide a comprehensive review of vision-based machine learning for plant disease identification, highlighting the rapid progress in accuracy but also the persistent gap between RGB-only and multi-modal approaches.\end{revblock} However, models based on RGB alone \hl{cannot access} indicators of metabolic stress and subsurface \hl{tissue} anomalies \hl{that are} naturally \hl{captured} by thermal bands \cite{lu2020\hl{,pineda2021}}. \begin{revblock}This limitation is particularly pronounced for diseases like stem-end rot in mangoes, where internal decay precedes visible surface symptoms.\end{revblock}
+Over the past decade, deep learning has \hl{fundamentally} transformed agricultural computer vision \cite{kamilaris2018,coulibaly2022}. Convolutional networks and vision transformers produce high-dimensional feature representations from RGB images \hl{that capture subtle visual patterns indicative of disease} \cite{dosovitskiy2021,liu2022convnext}. \begin{revblock}Thakur et al. \cite{thakur2022} provide a comprehensive review of vision-based machine learning for plant disease identification, highlighting the rapid progress in accuracy but also the persistent gap between RGB-only and multi-modal approaches.\end{revblock} However, models based on RGB alone \hl{cannot access} indicators of metabolic stress and subsurface \hl{tissue} anomalies \hl{that are} naturally \hl{captured} by thermal bands \cite{lu2020,pineda2021}. \begin{revblock}This limitation is particularly pronounced for diseases like stem-end rot in mangoes, where internal decay precedes visible surface symptoms.\end{revblock}
 
 \subsection{Cross-Modal Learning and Knowledge Transfer}
 
 Cross-modal techniques attempt to exploit relationships between different \hl{sensing} modalities or biological constructs \hl{to transfer learned representations across domains} \cite{zhuang2020}. Transfer learning has been \hl{widely} utilized in \hl{agricultural} applications \cite{chen2020_transfer,tan2018}, \hl{though} generally within the confines of single-anatomy or \hl{single-}modality \hl{boundaries} \cite{barbedo2019}.
 \begin{revblock}Knowledge distillation, introduced by Hinton et al. \cite{hinton2015}, provides a theoretical framework for transferring learned representations from one model (or modality) to another, and recent work has extended this concept to cross-modal settings \cite{li2023_kd}.
 
-Xu et al. \cite{xu2023} provide a comprehensive survey of multimodal learning with transformers, demonstrating that attention mechanisms are particularly effective at aligning and fusing features from heterogeneous data sources.\end{revblock} Attention mechanisms\hl{have shown promise for} coordinating multi-modal feature streams in agricultural sensing \cite{niu2021\hl{,guo2022}}\hl{, while} physics-informed modeling frameworks embed domain knowledge into \hl{detection} pipelines \cite{karniadakis2021}. \begin{revblock}Ji et al. \cite{ji2023} recently demonstrated that multi-label learning with transfer learning can improve crop disease recognition, while Wang et al. \cite{wang2022_synthetic} showed the potential of automated severity estimation using deep learning.\end{revblock} Foundation models and vision transformers demonstrate strong cross-domain generalization ability \cite{vaswani2017\hl{,dosovitskiy2021}}, suggesting that learned features can bridge anatomical boundaries (e.g., from leaves to fruits) when the underlying pathological processes share common characteristics.
+Xu et al. \cite{xu2023} provide a comprehensive survey of multimodal learning with transformers, demonstrating that attention mechanisms are particularly effective at aligning and fusing features from heterogeneous data sources.\end{revblock} Attention mechanisms \hl{have shown promise for} coordinating multi-modal feature streams in agricultural sensing \cite{niu2021,guo2022}\hl{, while} physics-informed modeling frameworks embed domain knowledge into \hl{detection} pipelines \cite{karniadakis2021}. \begin{revblock}Ji et al. \cite{ji2023} recently demonstrated that multi-label learning with transfer learning can improve crop disease recognition, while Wang et al. \cite{wang2022_synthetic} showed the potential of automated severity estimation using deep learning.\end{revblock} Foundation models and vision transformers demonstrate strong cross-domain generalization ability \cite{vaswani2017,dosovitskiy2021}, suggesting that learned features can bridge anatomical boundaries (e.g., from leaves to fruits) when the underlying pathological processes share common characteristics.
 
 \subsection{Smartphone-Based Agricultural AI}
 
-Affordable agricultural AI deployment through smartphones represents an active \hl{and growing} research direction \cite{pongnumkul2015\hl{,coulibaly2022}}. Mobile disease detection systems designed for resource-constrained environments \hl{have} demonstrate\hl{d} practical feasibility \hl{across multiple crop types} \cite{li2020\hl{,picon2022}}. \begin{revblock}Ahmad et al. \cite{ahmad2023} recently developed a deep learning-based mango grading and defect detection system, achieving promising results but relying solely on RGB input.\end{revblock} These platforms offer pathways toward democratized precision agriculture with implications for global food security \cite{liu2020_yolo}. \begin{revblock}However, existing smartphone-based solutions are limited to the information available in RGB images and cannot capture the thermal or spectral signatures that improve diagnostic accuracy. Our work addresses this gap by generating synthetic thermal information from RGB data alone, enabling multi-modal-like performance on commodity devices.\end{revblock}
+Affordable agricultural AI deployment through smartphones represents an active \hl{and growing} research direction \cite{pongnumkul2015,coulibaly2022}. Mobile disease detection systems designed for resource-constrained environments \hl{have demonstrated} practical feasibility \hl{across multiple crop types} \cite{li2020,picon2022}. \begin{revblock}Ahmad et al. \cite{ahmad2023} recently developed a deep learning-based mango grading and defect detection system, achieving promising results but relying solely on RGB input.\end{revblock} These platforms offer pathways toward democratized precision agriculture with implications for global food security \cite{liu2020_yolo}. \begin{revblock}However, existing smartphone-based solutions are limited to the information available in RGB images and cannot capture the thermal or spectral signatures that improve diagnostic accuracy. Our work addresses this gap by generating synthetic thermal information from RGB data alone, enabling multi-modal-like performance on commodity devices.\end{revblock}
 
 \section{Methodology}
 
@@ -115,7 +123,7 @@ The proposed framework operates as a three-stage pipeline, illustrated in Figure
     \begin{center}
     \includegraphics[width=0.95\linewidth]{crossmap_architecture_diagram.png}
     \end{center}
-    \caption{\hl{Overview of the proposed cross-modal knowledge transfer framework. Stage~1: A ResNet-18 lesion detector is trained on MangoLeafBD leaf images using supervised classification. Stage~2: The trained detector generates lesion probability maps for MangoFruitDDS fruit images, which are converted to synthetic thermal maps via physics-informed modeling. Stage~3: RGB and synthetic thermal features are extracted by dual branches and fused through a 16-head multi-head attention mechanism for disease classification.}}
+    \caption{Overview of the proposed cross-modal knowledge transfer framework. Stage~1: A ResNet-18 lesion detector is trained on MangoLeafBD leaf images using supervised classification. Stage~2: The trained detector generates lesion probability maps for MangoFruitDDS fruit images, which are converted to synthetic thermal maps via physics-informed modeling. Stage~3: RGB and synthetic thermal features are extracted by dual branches and fused through a 16-head multi-head attention mechanism for disease classification.}
     \label{fig:architecture_final}
 \end{figure}
 
@@ -130,10 +138,9 @@ This work employs two complementary datasets, each serving a distinct role in th
 \textbf{Preprocessing:} All images from both datasets are resized to $224 \times 224$ pixels. Each dataset is independently split into 70\% training, 15\% validation, and 15\% testing sets using stratified random sampling to preserve class distributions across splits. The splits are applied independently to each dataset: MangoLeafBD is split for training and evaluating the lesion detector, while MangoFruitDDS is split for training and evaluating the final fusion classifier.
 \end{revblock}
 
-\begin{revblock}
 \begin{table}[h!]
     \centering
-    \caption{Summary of datasets used in this study}
+    \caption{Summary of datasets used in this study [NEW]}
     \label{tab:datasets}
     \footnotesize
     \begin{tabular}{lcccc}
@@ -145,7 +152,6 @@ This work employs two complementary datasets, each serving a distinct role in th
         \bottomrule
     \end{tabular}
 \end{table}
-\end{revblock}
 
 \subsection{Sample Images from Datasets}
 Figure~\ref{fig:sample_images} presents representative samples from both datasets. The MangoFruitDDS collection shows healthy and diseased mangoes across various disease conditions, while MangoLeafBD contains leaf images that capture corresponding disease manifestations. These examples illustrate the visual similarities between disease symptoms in leaves and fruits that form the biological basis for cross-organ knowledge transfer.
@@ -179,7 +185,7 @@ Figure~\ref{fig:sample_images} presents representative samples from both dataset
     \label{fig:sample_images}
 \end{figure}
 
-\subsection{\hl{Stage 1:} Cross-Domain Knowledge Transfer \hl{via Lesion Detection}}
+\subsection{Stage 1: Cross-Domain Knowledge Transfer via Lesion Detection}
 Our approach builds on the biological observation that disease manifestations exhibit similar visual patterns across different plant organs \cite{bock2010}. This similarity arises from shared cellular stress responses that produce comparable lesion characteristics in leaves and fruits \cite{savary2019}. We formalize this relationship as:
 
 \begin{equation}
@@ -200,8 +206,8 @@ The lesion detector is a ResNet-18 \cite{he2016} backbone trained in a \textbf{s
 
 where $\sigma$ denotes sigmoid activation and $\mathcal{L}_{\text{lesion}}$ produces spatial probability maps encoding disease likelihood across tissue regions. \begin{revblock}Specifically, the spatial attention is computed as $A(x) = \sigma(\text{Conv}_{1 \times 1}(F(x))) \odot (1 - P_{\text{healthy}}(x))$, where $F(x)$ are intermediate feature maps and $P_{\text{healthy}}$ is the predicted probability of the healthy class, ensuring that attention is focused on diseased regions.\end{revblock}
 
-\subsection{\hl{Stage 2: Physics-Informed} Thermal Synthesis}
-\hl{The trained lesion detector is applied to fruit images to generate lesion probability maps, which are then transformed into synthetic thermal signatures through a biophysically-grounded model \cite{raissi2019,karniadakis2021}. This transformation is motivated by the observation that diseased plant tissue exhibits elevated temperatures due to increased metabolic activity, cell lysis, and disrupted transpiration \cite{mahlein2016,pineda2021}.} The thermal synthesis equation is:
+\subsection{Stage 2: Physics-Informed Thermal Synthesis}
+\hl{The trained lesion detector is applied to fruit images to generate lesion probability maps, which are then transformed into synthetic thermal signatures through a biophysically-grounded model} \cite{raissi2019,karniadakis2021}. \hl{This transformation is motivated by the observation that diseased plant tissue exhibits elevated temperatures due to increased metabolic activity, cell lysis, and disrupted transpiration} \cite{mahlein2016,pineda2021}. The thermal synthesis equation is:
 
 \begin{equation}
     T_{\text{syn}}(x,y) = T_{\text{base}} + \alpha \cdot \mathcal{M}(\mathcal{L}_{\text{lesion}}(x,y)) + \mathcal{D}(G_{\sigma}) + \mathcal{E}(\mathcal{N}(0,\beta))
@@ -231,14 +237,14 @@ The complete pipeline is summarized in Algorithm~\ref{alg:thermal}. The output i
         \STATE $T_{\text{base}} \leftarrow 0.3$
         \STATE $\alpha \leftarrow 0.7$
         \STATE $T_{\text{raw}} \leftarrow T_{\text{base}} + \alpha \times P_{\text{lesion}}$
-        \STATE $T_{\text{diffused}} \leftarrow \text{GaussianBlur}(T_{\text{raw}}, \hl{k{=}15,} \sigma{=}3.0)$
+        \STATE $T_{\text{diffused}} \leftarrow \text{GaussianBlur}(T_{\text{raw}}, k{=}15, \sigma{=}3.0)$
         \STATE $\text{noise} \leftarrow \mathcal{N}(0, 0.05)$
         \STATE $T_{\text{syn}} \leftarrow \text{clip}(T_{\text{diffused}} + \text{noise}, 0, 1)$
         \RETURN $T_{\text{syn}}$
     \end{algorithmic}
 \end{algorithm}
 
-\subsection{\hl{Stage 3:} Multi-Modal Fusion Architecture}
+\subsection{Stage 3: Multi-Modal Fusion Architecture}
 \begin{revblock}
 The fusion architecture employs a dual-branch design with transformer-inspired attention mechanisms for cross-modal integration, as shown in Figure~\ref{fig:architecture_full}.
 
@@ -264,7 +270,7 @@ The multi-head attention mechanism automatically weights modality contributions 
     \begin{center}
     \includegraphics[width=0.75\linewidth]{Architecture.png}
     \end{center}
-    \caption{\hl{Detailed fusion architecture. Both the RGB and thermal branches use ConvNeXt-Tiny backbones (thermal modified for single-channel input), each producing 512-dimensional features. Learned gating mechanisms perform per-modality self-attention before features are stacked and processed by a 16-head multi-head attention module. Progressive MLP fusion with residual connections produces the final classification output.}}
+    \caption{Detailed fusion architecture. Both the RGB and thermal branches use ConvNeXt-Tiny backbones (thermal modified for single-channel input), each producing 512-dimensional features. Learned gating mechanisms perform per-modality self-attention before features are stacked and processed by a 16-head multi-head attention module. Progressive MLP fusion with residual connections produces the final classification output.}
     \label{fig:architecture_full}
 \end{figure}
 
@@ -308,10 +314,10 @@ Performance was assessed using multiple metrics:
 \section{Results and Analysis}
 
 \subsection{Overall Performance Comparison}
-Table~\ref{tab:performance} summarizes results across \hl{the methods evaluated on the MangoFruitDDS test set}. Our model attains 87.3\% accuracy, improving upon the best RGB-only baseline \hl{(ViT-Base at 85.8\%)} by 4.8\% while requiring no additional sensors. \hl{The ``Thermal Camera'' row represents an upper bound using real thermal imaging equipment costing \$25,000. Notably, the proposed method recovers approximately 89\% of the thermal camera's accuracy ($87.3/93.5 = 0.933$) at zero hardware cost.}
+Table~\ref{tab:performance} summarizes results across \hl{the methods evaluated on the MangoFruitDDS test set}. Our model attains 87.3\% accuracy, improving upon the best RGB-only baseline \hl{(ViT-Base at 85.8\%)} by 4.8\% while requiring no additional sensors. \hl{The ``Thermal Camera'' row represents an upper bound using real thermal imaging equipment costing \$25,000. Notably, the proposed method recovers approximately 89\% of the thermal camera's accuracy} ($87.3/93.5 = 0.933$) \hl{at zero hardware cost.}
 
 \begin{table}[h!]
-    \caption{Performance comparison across different methods \hl{on the MangoFruitDDS test set. The best RGB-only baseline is ViT-Base (85.8\%). Our proposed method achieves 87.3\%, a 4.8\% absolute improvement.}}
+    \caption{Performance comparison across different methods on the MangoFruitDDS test set. The best RGB-only baseline is ViT-Base (85.8\%). Our proposed method achieves 87.3\%, a 4.8\% absolute improvement.}
     \label{tab:performance}
     \raggedright
     \scriptsize
@@ -334,9 +340,10 @@ Table~\ref{tab:performance} summarizes results across \hl{the methods evaluated 
 \begin{revblock}
 \subsection{Comparison with State-of-the-Art Methods}
 To contextualize our results within the broader literature, Table~\ref{tab:sota} compares our method against published approaches for mango and general fruit disease detection. Direct comparison is challenging because methods use different datasets and experimental protocols; nonetheless, the comparison provides useful context. Our proposed method achieves competitive accuracy while uniquely requiring zero additional hardware cost beyond a standard RGB camera.
+\end{revblock}
 
 \begin{table}[h!]
-    \caption{Comparison with published state-of-the-art methods for fruit/mango disease detection. Results marked with $^{\dagger}$ are on different datasets and provided for context.}
+    \caption{Comparison with published state-of-the-art methods for fruit/mango disease detection [NEW]. Results marked with $^{\dagger}$ are on different datasets and provided for context.}
     \label{tab:sota}
     \raggedright
     \scriptsize
@@ -357,6 +364,7 @@ To contextualize our results within the broader literature, Table~\ref{tab:sota}
     \end{tabular}
 \end{table}
 
+\begin{revblock}
 The higher accuracies reported by Mohanty et al. \cite{mohanty2016} and Ferentinos \cite{ferentinos2018} are obtained on the PlantVillage dataset, which contains images captured under controlled laboratory conditions with uniform backgrounds. The MangoFruitDDS dataset used in our study presents a more challenging classification task with natural imaging conditions. Singh et al. \cite{singh2019} achieve 97.1\% on mango leaf images, which is the same data domain used to train our lesion detector; the lower accuracy on fruit images reflects the additional difficulty of fruit-based disease detection where symptoms are less visually distinct. Ahmad et al. \cite{ahmad2023} report 91.2\% on a different mango fruit dataset using an RGB-only approach, while our method achieves 87.3\% on MangoFruitDDS with the added benefit of synthetic thermal information fusion.
 \end{revblock}
 
@@ -386,11 +394,11 @@ Table~\ref{tab:perclass} reports class-wise \hl{performance}. Gains are most \hl
 \end{table}
 
 \subsection{Confusion Matrix Analysis}
-\hl{Confusion matrices for each method are presented in Figures~\ref{fig:conf_resnet}--\ref{fig:conf_proposed}. The proposed method reduces misclassifications between visually similar classes (e.g., Stem/Rot vs. Anthracnose) compared to the RGB baseline. The stronger concentration of predictions along the diagonal in Figure~\ref{fig:conf_proposed} indicates improved class separability achieved through the synthetic thermal cues and attention-based fusion.}
+\hl{Confusion matrices for each method are presented in} Figures~\ref{fig:conf_resnet}--\ref{fig:conf_proposed}. \hl{The proposed method reduces misclassifications between visually similar classes (e.g., Stem/Rot vs.\ Anthracnose) compared to the RGB baseline. The stronger concentration of predictions along the diagonal in} Figure~\ref{fig:conf_proposed} \hl{indicates improved class separability achieved through the synthetic thermal cues and attention-based fusion.}
 
 \begin{figure}[h!]
     \begin{center}
-    \includegraphics[width=0.75\linewidth]{Confusion_Matrix_-_ResNet-18_RGB.png}
+    \includegraphics[width=0.75\linewidth]{../figures/Confusion_Matrix_-_ResNet-18_RGB.png}
     \end{center}
     \caption{Confusion Matrix --- ResNet-18 RGB}
     \label{fig:conf_resnet}
@@ -398,7 +406,7 @@ Table~\ref{tab:perclass} reports class-wise \hl{performance}. Gains are most \hl
 
 \begin{figure}[h!]
     \begin{center}
-    \includegraphics[width=0.75\linewidth]{Confusion_Matrix_-_Concat_Fusion.png}
+    \includegraphics[width=0.75\linewidth]{../figures/Confusion_Matrix_-_Concat_Fusion.png}
     \end{center}
     \caption{Confusion Matrix --- Concat Fusion}
     \label{fig:conf_concat}
@@ -406,7 +414,7 @@ Table~\ref{tab:perclass} reports class-wise \hl{performance}. Gains are most \hl
 
 \begin{figure}[h!]
     \begin{center}
-    \includegraphics[width=0.75\linewidth]{Confusion_Matrix_-_Average_Fusion.png}
+    \includegraphics[width=0.75\linewidth]{../figures/Confusion_Matrix_-_Average_Fusion.png}
     \end{center}
     \caption{Confusion Matrix --- Average Fusion}
     \label{fig:conf_average}
@@ -414,54 +422,53 @@ Table~\ref{tab:perclass} reports class-wise \hl{performance}. Gains are most \hl
 
 \begin{figure}[h!]
     \begin{center}
-    \includegraphics[width=0.75\linewidth]{Confusion_Matrix_-_Proposed_Method.png}
+    \includegraphics[width=0.75\linewidth]{../figures/Confusion_Matrix_-_Proposed_Method.png}
     \end{center}
     \caption{Confusion Matrix --- Proposed Method}
     \label{fig:conf_proposed}
 \end{figure}
 
 \subsection{ROC Curve Analysis}
-\hl{ROC curves for each method are shown in Figures~\ref{fig:roc_resnet}--\ref{fig:roc_proposed}.} Across all disease classes, the proposed method's ROC curves stay closer to the top-left corner, indicating higher true-positive rates \hl{at} comparable false-positive rates. \hl{The proposed method achieves the highest AUC of 0.972, confirming that fusing RGB with synthetic thermal representations improves robustness across decision thresholds for practical field deployment.}
+\hl{ROC curves for each method are shown in} Figures~\ref{fig:roc_resnet}--\ref{fig:roc_proposed}. Across all disease classes, the proposed method's ROC curves stay closer to the top-left corner, indicating higher true-positive rates \hl{at} comparable false-positive rates. \hl{The proposed method achieves the highest AUC of 0.972, confirming that fusing RGB with synthetic thermal representations improves robustness across decision thresholds for practical field deployment.}
 
 \begin{figure}[h!]
     \begin{center}
-    \includegraphics[width=0.75\linewidth]{ResNet_18_RGB_ROC.png}
+    \includegraphics[width=0.75\linewidth]{../figures/ResNet_18_RGB_ROC.png}
     \end{center}
-    \caption{ROC Curve --- ResNet-18 RGB \hl{(AUC = 0.956)}}
+    \caption{ROC Curve --- ResNet-18 RGB (AUC = 0.956)}
     \label{fig:roc_resnet}
 \end{figure}
 
 \begin{figure}[h!]
     \begin{center}
-    \includegraphics[width=0.75\linewidth]{Concat_Fusion_ROC.png}
+    \includegraphics[width=0.75\linewidth]{../figures/Concat_Fusion_ROC.png}
     \end{center}
-    \caption{ROC Curve --- Concat Fusion \hl{(AUC = 0.968)}}
+    \caption{ROC Curve --- Concat Fusion (AUC = 0.968)}
     \label{fig:roc_concat}
 \end{figure}
 
 \begin{figure}[h!]
     \begin{center}
-    \includegraphics[width=0.75\linewidth]{Average_Fusion_ROC.png}
+    \includegraphics[width=0.75\linewidth]{../figures/Average_Fusion_ROC.png}
     \end{center}
-    \caption{ROC Curve --- Average Fusion \hl{(AUC = 0.971)}}
+    \caption{ROC Curve --- Average Fusion (AUC = 0.971)}
     \label{fig:roc_average}
 \end{figure}
 
 \begin{figure}[h!]
     \begin{center}
-    \includegraphics[width=0.75\linewidth]{Proposed_Method_ROC.png}
+    \includegraphics[width=0.75\linewidth]{../figures/Proposed_Method_ROC.png}
     \end{center}
-    \caption{ROC Curve --- Proposed Method \hl{(AUC = 0.972)}}
+    \caption{ROC Curve --- Proposed Method (AUC = 0.972)}
     \label{fig:roc_proposed}
 \end{figure}
 
 \subsection{Ablation Study}
-We evaluated the \hl{contribution} of each module \hl{through systematic ablation, as summarized in Table~\ref{tab:ablation}}. Removing attention lowers accuracy by about 3.2\%. Disabling the thermal synthesis reduces performance by roughly 2.1\%, and omitting cross-domain transfer yields an additional 1.8\% drop.
+We evaluated the \hl{contribution} of each module \hl{through systematic ablation, as summarized in} Table~\ref{tab:ablation}. Removing attention lowers accuracy by about 3.2\%. Disabling the thermal synthesis reduces performance by roughly 2.1\%, and omitting cross-domain transfer yields an additional 1.8\% drop.
 
-\begin{revblock}
 \begin{table}[h!]
     \centering
-    \caption{Ablation study results showing the contribution of each component}
+    \caption{Ablation study results showing the contribution of each component [NEW]}
     \label{tab:ablation}
     \footnotesize
     \begin{tabular}{lcc}
@@ -476,16 +483,16 @@ We evaluated the \hl{contribution} of each module \hl{through systematic ablatio
         \bottomrule
     \end{tabular}
 \end{table}
-\end{revblock}
 
 \begin{revblock}
 \subsection{Influence of Data Augmentation}
 \label{sec:augmentation_ablation}
 Table~\ref{tab:augmentation} reports the effect of individual augmentation strategies on the proposed method. The combination of geometric transforms (flips and rotations) and photometric transforms (color jittering, CLAHE) provides the largest improvement. Horizontal and vertical flips contribute 1.2\% accuracy gain, while rotations add a further 0.8\%. Photometric augmentations contribute 1.1\%, and the combination of all augmentations yields a total improvement of 3.7\% over the non-augmented baseline. The rotation limits were set conservatively ($\pm 15^{\circ}$ for RGB, $\pm 10^{\circ}$ for thermal) to avoid introducing unrealistic orientations that could degrade the physics-informed structure of the synthetic thermal maps.
+\end{revblock}
 
 \begin{table}[h!]
     \centering
-    \caption{Effect of data augmentation strategies on classification accuracy}
+    \caption{Effect of data augmentation strategies on classification accuracy [NEW]}
     \label{tab:augmentation}
     \footnotesize
     \begin{tabular}{lc}
@@ -500,11 +507,10 @@ Table~\ref{tab:augmentation} reports the effect of individual augmentation strat
         \bottomrule
     \end{tabular}
 \end{table}
-\end{revblock}
 
 \begin{figure}[h!]
     \begin{center}
-    \includegraphics[width=0.75\linewidth]{accuracy.png}
+    \includegraphics[width=0.75\linewidth]{../figures/accuracy.png}
     \end{center}
     \caption{Training accuracy and loss curves showing model convergence}
     \label{fig:accuracy}
@@ -512,15 +518,15 @@ Table~\ref{tab:augmentation} reports the effect of individual augmentation strat
 
 \section{Discussion}
 
-\subsection{Technical Contributions \hl{and Analysis}}
+\subsection{Technical Contributions and Analysis}
 \begin{revblock}
 The results demonstrate that disease diagnostic patterns learned from one plant organ (leaves) can be successfully generalized to another (fruits) \cite{hassan2021,bock2010}. This cross-organ transfer is made possible by the shared biological mechanisms underlying disease manifestation: fungal and bacterial pathogens trigger similar cellular stress responses---including oxidative stress, cell wall degradation, and altered metabolic activity---regardless of the specific plant tissue affected \cite{savary2019}. The physics-informed synthesis stage \cite{raissi2019,karniadakis2021} transforms these transferred lesion patterns into thermal-like representations that encode the expected metabolic heat signatures of diseased tissue, while the attention-based fusion module \cite{vaswani2017,guo2022} learns to optimally combine RGB and synthetic thermal features based on their respective informativeness for each disease class.
 
 The per-class analysis in Table~\ref{tab:perclass} reveals that the greatest improvement occurs for Stem/Rot (+15.3\% F1), a disease characterized by internal tissue decay that produces thermal anomalies well before visible surface symptoms appear. This is precisely the scenario where thermal imaging provides the most value, and our synthetic thermal maps successfully capture this diagnostic signal. In contrast, Black Mould (+0.0\%), which manifests as conspicuous surface discoloration, gains nothing from thermal fusion because the RGB signal already captures its diagnostic features comprehensively.
 \end{revblock}
 
-\subsection{Practical Impact \hl{and Cost-Effectiveness}}
-In practice, the model recovers roughly 89\% of a thermal camera's accuracy at no extra hardware cost. \hl{Table~\ref{tab:cost} quantifies this cost-effectiveness advantage across different diagnostic systems. The proposed method achieves the most favorable cost-per-unit-accuracy ratio among all options considered, making it particularly suitable for deployment in resource-constrained agricultural settings where smallholder farmers cannot afford specialized imaging equipment} \cite{temniranrat2021,benos2021}.
+\subsection{Practical Impact and Cost-Effectiveness}
+In practice, the model recovers roughly 89\% of a thermal camera's accuracy at no extra hardware cost. Table~\ref{tab:cost} \hl{quantifies this cost-effectiveness advantage across different diagnostic systems. The proposed method achieves the most favorable cost-per-unit-accuracy ratio among all options considered, making it particularly suitable for deployment in resource-constrained agricultural settings where smallholder farmers cannot afford specialized imaging equipment} \cite{temniranrat2021,benos2021}.
 
 \begin{table}[h!]
     \centering
@@ -531,7 +537,7 @@ In practice, the model recovers roughly 89\% of a thermal camera's accuracy at n
         \toprule
         \textbf{System} & \textbf{Hardware Cost} & \textbf{Accuracy} & \textbf{Cost/Accuracy} \\
         \midrule
-        \hl{Expert Field Diagnosis} & \hl{\$0} & \hl{65--75\%} & \hl{\$0} \\
+        Expert Field Diagnosis & \$0 & 65--75\% & \$0 \\
         Thermal Camera & \$25,000 & 93.5\% & \$267 \\
         Multi-Spectral & \$50,000 & 95.0\% & \$526 \\
         \textbf{Proposed Method} & \textbf{\$0} & \textbf{87.3\%} & \textbf{\$0} \\

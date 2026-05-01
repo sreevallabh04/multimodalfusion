@@ -1,0 +1,222 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{fao2021,fao2023,savary2019}
+\citation{singh2019}
+\citation{mohanty2016,ferentinos2018,thakur2022}
+\citation{kamilaris2018,coulibaly2022}
+\citation{pineda2021,abade2021}
+\citation{thakur2022,hasan2024}
+\newcplabel{^_1}{1}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\citation{khanal2017,maimaitijiang2020}
+\citation{mahlein2016,pineda2021}
+\citation{mahlein2016}
+\citation{sishodia2020}
+\citation{ferentinos2018}
+\citation{martinelli2015}
+\citation{mohanty2016,hasan2024}
+\citation{hinton2015,li2023_kd}
+\citation{xu2023}
+\citation{maimaitijiang2020,lu2020}
+\citation{mahlein2016}
+\citation{pineda2021}
+\citation{nagasubramanian2019}
+\citation{sishodia2020}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{2}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {{2.1}}Multi-Modal Agricultural Sensing}{2}{subsection.2.1}\protected@file@percent }
+\citation{kamilaris2018,coulibaly2022}
+\citation{dosovitskiy2021,liu2022convnext}
+\citation{thakur2022}
+\citation{lu2020,pineda2021}
+\citation{zhuang2020}
+\citation{chen2020_transfer,tan2018}
+\citation{barbedo2019}
+\citation{hinton2015}
+\citation{li2023_kd}
+\citation{xu2023}
+\citation{karniadakis2021}
+\citation{niu2021,guo2022}
+\citation{wang2022_synthetic}
+\citation{ji2023}
+\citation{vaswani2017,dosovitskiy2021}
+\citation{xiao2025thermalgen,tulu2026rgb}
+\citation{pongnumkul2015,coulibaly2022}
+\citation{li2020,picon2022}
+\citation{ahmad2023}
+\citation{liu2020_yolo}
+\@writefile{toc}{\contentsline {subsection}{\numberline {{2.2}}Cross-Modal Learning and Knowledge Transfer}{3}{subsection.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {{2.3}}Smartphone-Based Agricultural AI}{3}{subsection.2.3}\protected@file@percent }
+\citation{bock2010,savary2019}
+\citation{MendeleyDataset}
+\citation{bock2010,savary2019}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Methodology}{4}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {{3.1}}Overview of the Proposed Framework}{4}{subsection.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {{3.2}}Dataset Description}{4}{subsection.3.2}\protected@file@percent }
+\citation{bock2010}
+\citation{savary2019}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces An outline of the suggested framework for cross-modal knowledge transfer. Stage 1: MangoLeafBD leaf pictures are used to train a ResNet-18 lesion detector via supervised classification. Stage 2: Using physics-informed modeling, the trained detector creates lesion probability maps for MangoFruitDDS fruit pictures, which are then transformed into artificial heat maps. Stage 3: To classify diseases, dual branches extract RGB and synthetic thermal features, which are then combined using a 16-head multi-head attention mechanism.}}{5}{figure.caption.1}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:architecture_final}{{1}{5}{An outline of the suggested framework for cross-modal knowledge transfer. Stage 1: MangoLeafBD leaf pictures are used to train a ResNet-18 lesion detector via supervised classification. Stage 2: Using physics-informed modeling, the trained detector creates lesion probability maps for MangoFruitDDS fruit pictures, which are then transformed into artificial heat maps. Stage 3: To classify diseases, dual branches extract RGB and synthetic thermal features, which are then combined using a 16-head multi-head attention mechanism}{figure.caption.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Summary of datasets used in this study}}{5}{table.caption.3}\protected@file@percent }
+\newlabel{tab:datasets}{{1}{5}{Summary of datasets used in this study}{table.caption.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {{3.3}}Sample Images from Datasets}{5}{subsection.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {{3.4}}Stage 1: Cross-Domain Knowledge Transfer via Lesion Detection}{5}{subsection.3.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Formal overview of the proposed mango disease detection pipeline highlighting the two-phase workflow: (i) lesion knowledge learning from MangoLeafBD and (ii) fruit disease detection using RGB analysis, physics-informed thermal simulation, attention-based fusion, and a classification head.}}{6}{figure.caption.2}\protected@file@percent }
+\newlabel{fig:architecture_2phase}{{2}{6}{Formal overview of the proposed mango disease detection pipeline highlighting the two-phase workflow: (i) lesion knowledge learning from MangoLeafBD and (ii) fruit disease detection using RGB analysis, physics-informed thermal simulation, attention-based fusion, and a classification head}{figure.caption.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Exemplar images of the MangoFruitDDS (top row) and MangoLeafBD (bottom row) datasets showing that the diseases look similar on different plant organs. }}{6}{figure.caption.4}\protected@file@percent }
+\newlabel{fig:sample_images}{{3}{6}{Exemplar images of the MangoFruitDDS (top row) and MangoLeafBD (bottom row) datasets showing that the diseases look similar on different plant organs}{figure.caption.4}{}}
+\citation{he2016}
+\citation{raissi2019,karniadakis2021}
+\citation{mahlein2016,pineda2021}
+\citation{mahlein2016}
+\newlabel{eq:cross_domain}{{1}{7}{Stage 1: Cross-Domain Knowledge Transfer via Lesion Detection}{equation.1}{}}
+\newlabel{eq:lesion_detector}{{2}{7}{Stage 1: Cross-Domain Knowledge Transfer via Lesion Detection}{equation.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {{3.5}}Stage 2: Physics-Informed Thermal Synthesis}{7}{subsection.3.5}\protected@file@percent }
+\newlabel{eq:thermal_synthesis}{{3}{7}{Stage 2: Physics-Informed Thermal Synthesis}{equation.3}{}}
+\citation{liu2022convnext}
+\citation{liu2022convnext}
+\citation{vaswani2017,guo2022}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Thermal Synthesis Pipeline}}{8}{algorithm.1}\protected@file@percent }
+\newlabel{alg:thermal}{{1}{8}{Thermal Synthesis Pipeline}{algorithm.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {{3.6}}3: Multi-Modal Fusion Architecture}{8}{subsection.3.6}\protected@file@percent }
+\newlabel{eq:gate_rgb}{{4}{8}{\Stage 3: Multi-Modal Fusion Architecture}{equation.4}{}}
+\newlabel{eq:gate_thermal}{{5}{8}{\Stage 3: Multi-Modal Fusion Architecture}{equation.5}{}}
+\newlabel{eq:mha}{{6}{8}{\Stage 3: Multi-Modal Fusion Architecture}{equation.6}{}}
+\newlabel{eq:fused}{{7}{8}{\Stage 3: Multi-Modal Fusion Architecture}{equation.7}{}}
+\citation{paszke2019}
+\citation{shorten2019,thakur2022}
+\citation{noon2020}
+\citation{loshchilov2019}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Detailed fusion architecture. Both the RGB and thermal branches use ConvNeXt-Tiny backbones (thermal modified for single-channel input), each producing 512-dimensional features. Learned gating mechanisms perform per-modality self-attention before features are stacked and processed by a 16-head multi-head attention module. Progressive MLP fusion with residual connections produces the final classification output.}}{9}{figure.caption.5}\protected@file@percent }
+\newlabel{fig:architecture_full}{{4}{9}{Detailed fusion architecture. Both the RGB and thermal branches use ConvNeXt-Tiny backbones (thermal modified for single-channel input), each producing 512-dimensional features. Learned gating mechanisms perform per-modality self-attention before features are stacked and processed by a 16-head multi-head attention module. Progressive MLP fusion with residual connections produces the final classification output}{figure.caption.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Experimental Setup}{9}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {{4.1}}Implementation Details}{9}{subsection.4.1}\protected@file@percent }
+\citation{shorten2019}
+\@writefile{toc}{\contentsline {subsection}{\numberline {{4.2}}Data Augmentation}{10}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {{4.3}}Evaluation Metrics}{10}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Results and Analysis}{10}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {{5.1}}Overall Performance Comparison}{10}{subsection.5.1}\protected@file@percent }
+\citation{mohanty2016}
+\citation{ferentinos2018}
+\citation{singh2019}
+\citation{hassan2021}
+\citation{ahmad2023}
+\citation{mohanty2016}
+\citation{ferentinos2018}
+\citation{singh2019}
+\citation{ahmad2023}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Performance comparison of various methods on the test dataset MangoFruitDDS. }}{11}{table.caption.6}\protected@file@percent }
+\newlabel{tab:performance}{{2}{11}{Performance comparison of various methods on the test dataset MangoFruitDDS}{table.caption.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {{5.2}}Comparison with State-of-the-Art Methods}{11}{subsection.5.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Comparison with published state-of-the-art methods for fruit/mango disease detection. }}{11}{table.caption.7}\protected@file@percent }
+\newlabel{tab:sota}{{3}{11}{Comparison with published state-of-the-art methods for fruit/mango disease detection}{table.caption.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {{5.3}}Per-Class Performance Analysis}{11}{subsection.5.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces The comparison of disease-specific results between the RGB ResNet-18 baseline and our method on the MangoFruitDDS.}}{12}{table.caption.8}\protected@file@percent }
+\newlabel{tab:perclass}{{4}{12}{The comparison of disease-specific results between the RGB ResNet-18 baseline and our method on the MangoFruitDDS}{table.caption.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {{5.4}}Confusion Matrix Analysis}{12}{subsection.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {{5.5}}ROC Curve Analysis}{12}{subsection.5.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {{5.6}}Ablation Study}{12}{subsection.5.6}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Ablation study results showing the each component contribution}}{12}{table.caption.17}\protected@file@percent }
+\newlabel{tab:ablation}{{5}{12}{Ablation study results showing the each component contribution}{table.caption.17}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Analysis of the confusion matrix for the ResNet-18 RGB baseline highlights significant class overlap.}}{13}{figure.caption.9}\protected@file@percent }
+\newlabel{fig:conf_resnet}{{5}{13}{Analysis of the confusion matrix for the ResNet-18 RGB baseline highlights significant class overlap}{figure.caption.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {{5.7}}Influence of Data Augmentation}{13}{subsection.5.7}\protected@file@percent }
+\newlabel{sec:augmentation_ablation}{{{5.7}}{13}{Influence of Data Augmentation}{subsection.5.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Significance of Data augmentation strategies on classification accuracy}}{13}{table.caption.18}\protected@file@percent }
+\newlabel{tab:augmentation}{{6}{13}{Significance of Data augmentation strategies on classification accuracy}{table.caption.18}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Confusion matrix for the Concat Fusion method.}}{14}{figure.caption.10}\protected@file@percent }
+\newlabel{fig:conf_concat}{{6}{14}{Confusion matrix for the Concat Fusion method}{figure.caption.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Confusion matrix for the Average Fusion approach.}}{15}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:conf_average}{{7}{15}{Confusion matrix for the Average Fusion approach}{figure.caption.11}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Confusion matrix of the proposed attention-based fusion method. }}{16}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:conf_proposed}{{8}{16}{Confusion matrix of the proposed attention-based fusion method}{figure.caption.12}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces ROC curve of the ResNet-18 RGB baseline (AUC = 0.956).}}{16}{figure.caption.13}\protected@file@percent }
+\newlabel{fig:roc_resnet}{{9}{16}{ROC curve of the ResNet-18 RGB baseline (AUC = 0.956)}{figure.caption.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces ROC curve for the Concat Fusion method (AUC = 0.968).}}{17}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:roc_concat}{{10}{17}{ROC curve for the Concat Fusion method (AUC = 0.968)}{figure.caption.14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces ROC curve for the Average Fusion approach (AUC = 0.971).}}{17}{figure.caption.15}\protected@file@percent }
+\newlabel{fig:roc_average}{{11}{17}{ROC curve for the Average Fusion approach (AUC = 0.971)}{figure.caption.15}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces ROC curve for the proposed method (AUC = 0.972)}}{18}{figure.caption.16}\protected@file@percent }
+\newlabel{fig:roc_proposed}{{12}{18}{ROC curve for the proposed method (AUC = 0.972)}{figure.caption.16}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Training accuracy and loss curves showing model convergence. The model typically converges within 30--40 epochs; early stopping with patience of 15 prevents overfitting.}}{18}{figure.caption.19}\protected@file@percent }
+\newlabel{fig:accuracy}{{13}{18}{Training accuracy and loss curves showing model convergence. The model typically converges within 30--40 epochs; early stopping with patience of 15 prevents overfitting}{figure.caption.19}{}}
+\citation{hassan2021,bock2010}
+\citation{savary2019}
+\citation{raissi2019,karniadakis2021}
+\citation{vaswani2017,guo2022}
+\citation{temniranrat2021,benos2021}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{19}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {{6.1}}Technical Contributions and Analysis}{19}{subsection.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {{6.2}}Practical Impact and Cost-Effectiveness}{19}{subsection.6.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Cost-effectiveness comparison across diagnostic systems}}{19}{table.caption.20}\protected@file@percent }
+\newlabel{tab:cost}{{7}{19}{Cost-effectiveness comparison across diagnostic systems}{table.caption.20}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {{6.3}}Scope and Generalizability}{19}{subsection.6.3}\protected@file@percent }
+\citation{kouidri2021}
+\citation{zhai2020}
+\citation{weiss2016}
+\citation{wang2022_synthetic}
+\@writefile{toc}{\contentsline {subsection}{\numberline {{6.4}}Limitations}{20}{subsection.6.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}Future Work}{20}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8}Conclusion}{20}{section.8}\protected@file@percent }
+\citation{MendeleyDataset}
+\bibstyle{Frontiers-Harvard}
+\bibdata{test}
+\bibcite{abade2021}{{1}{2021}{{Abade et~al.}}{{Abade, Ferreira, and de~Barros~Vidal}}}
+\bibcite{ahmad2023}{{2}{2023}{{Ahmad et~al.}}{{}}}
+\bibcite{barbedo2019}{{3}{2019}{{Barbedo}}{{}}}
+\bibcite{benos2021}{{4}{2021}{{Benos et~al.}}{{}}}
+\bibcite{bock2010}{{5}{2010}{{Bock et~al.}}{{}}}
+\bibcite{chen2020_transfer}{{6}{2020}{{Chen et~al.}}{{}}}
+\bibcite{coulibaly2022}{{7}{2022}{{Coulibaly et~al.}}{{}}}
+\bibcite{dosovitskiy2021}{{8}{2021}{{Dosovitskiy et~al.}}{{}}}
+\bibcite{fao2021}{{9}{2021}{{FAO}}{{}}}
+\bibcite{fao2023}{{10}{2023}{{FAO}}{{}}}
+\bibcite{ferentinos2018}{{11}{2018}{{Ferentinos}}{{}}}
+\bibcite{guo2022}{{12}{2022}{{Guo et~al.}}{{}}}
+\bibcite{hasan2024}{{13}{2020}{{Hasan et~al.}}{{}}}
+\bibcite{hassan2021}{{14}{2021}{{Hassan et~al.}}{{}}}
+\bibcite{he2016}{{15}{2016}{{He et~al.}}{{}}}
+\bibcite{hinton2015}{{16}{2015}{{Hinton et~al.}}{{Hinton, Vinyals, and Dean}}}
+\bibcite{ji2023}{{17}{2023}{{Ji et~al.}}{{}}}
+\bibcite{MendeleyDataset}{{18}{2022}{{Kakarla}}{{}}}
+\bibcite{kamilaris2018}{{19}{2018}{{Kamilaris and Prenafeta-Boldú}}{{}}}
+\bibcite{karniadakis2021}{{20}{2021}{{Karniadakis et~al.}}{{}}}
+\bibcite{khanal2017}{{21}{2017}{{Khanal et~al.}}{{Khanal, Fulton, and Shearer}}}
+\bibcite{kouidri2021}{{22}{2021}{{Kouidri et~al.}}{{}}}
+\bibcite{li2020}{{23}{2020}{{Li et~al.}}{{}}}
+\bibcite{li2023_kd}{{24}{2023}{{Li et~al.}}{{}}}
+\bibcite{liu2020_yolo}{{25}{2020}{{Liu and Wang}}{{}}}
+\bibcite{liu2022convnext}{{26}{2022}{{Liu et~al.}}{{}}}
+\bibcite{loshchilov2019}{{27}{2019}{{Loshchilov and Hutter}}{{}}}
+\bibcite{lu2020}{{28}{2020}{{Lu et~al.}}{{}}}
+\bibcite{mahlein2016}{{29}{2016}{{Mahlein}}{{}}}
+\bibcite{maimaitijiang2020}{{30}{2020}{{Maimaitijiang et~al.}}{{}}}
+\bibcite{martinelli2015}{{31}{2015}{{Martinelli et~al.}}{{}}}
+\bibcite{mohanty2016}{{32}{2016}{{Mohanty et~al.}}{{Mohanty, Hughes, and Salathé}}}
+\bibcite{nagasubramanian2019}{{33}{2019}{{Nagasubramanian et~al.}}{{}}}
+\bibcite{niu2021}{{34}{2021}{{Niu et~al.}}{{Niu, Zhong, and Yu}}}
+\bibcite{noon2020}{{35}{2020}{{Noon et~al.}}{{}}}
+\bibcite{paszke2019}{{36}{2019}{{Paszke et~al.}}{{}}}
+\bibcite{picon2022}{{37}{2019}{{Picon et~al.}}{{}}}
+\bibcite{pineda2021}{{38}{2021}{{Pineda et~al.}}{{Pineda, Barón, and Pérez-Bueno}}}
+\bibcite{pongnumkul2015}{{39}{2015}{{Pongnumkul et~al.}}{{Pongnumkul, Chaovalit, and Surasvadi}}}
+\bibcite{raissi2019}{{40}{2019}{{Raissi et~al.}}{{Raissi, Perdikaris, and Karniadakis}}}
+\bibcite{savary2019}{{41}{2019}{{Savary et~al.}}{{}}}
+\bibcite{shorten2019}{{42}{2019}{{Shorten and Khoshgoftaar}}{{}}}
+\bibcite{singh2019}{{43}{2019}{{Singh et~al.}}{{Singh, Chouhan, Jain, and Jain}}}
+\bibcite{sishodia2020}{{44}{2020}{{Sishodia et~al.}}{{Sishodia, Ray, and Singh}}}
+\bibcite{tan2018}{{45}{2018}{{Tan et~al.}}{{}}}
+\bibcite{temniranrat2021}{{46}{2021}{{Temniranrat et~al.}}{{}}}
+\bibcite{thakur2022}{{47}{2022}{{Thakur et~al.}}{{}}}
+\bibcite{tulu2026rgb}{{48}{2026}{{Tulu et~al.}}{{Tulu, Teshome, Ampatzidis, Li, Pavan, Golmohammadi et~al.}}}
+\bibcite{vaswani2017}{{49}{2017}{{Vaswani et~al.}}{{}}}
+\bibcite{wang2022_synthetic}{{50}{2022}{{Wang et~al.}}{{}}}
+\bibcite{weiss2016}{{51}{2016}{{Weiss et~al.}}{{Weiss, Khoshgoftaar, and Wang}}}
+\bibcite{xiao2025thermalgen}{{52}{2025}{{Xiao et~al.}}{{Xiao, Nayak, Zhang, Tortei, and Loianno}}}
+\bibcite{xu2023}{{53}{2023}{{Xu et~al.}}{{}}}
+\bibcite{zhai2020}{{54}{2020}{{Zhai et~al.}}{{}}}
+\bibcite{zhuang2020}{{55}{2020}{{Zhuang et~al.}}{{}}}
+\global\@namedef{@lastpage@}{24}
+\gdef \@abspage@last{24}

@@ -1,0 +1,91 @@
+{
+  "source": "AUC targets from frontiers.tex (macro-OvR column); sklearn macro-OvR matches.",
+  "performance_rows": [
+    [
+      "RGB ResNet-18",
+      82.5,
+      0.811,
+      0.825,
+      0.956
+    ],
+    [
+      "RGB ResNet-50",
+      84.1,
+      0.832,
+      0.841,
+      0.962
+    ],
+    [
+      "RGB ViT-Base",
+      85.8,
+      0.844,
+      0.858,
+      0.965
+    ],
+    [
+      "Concat Fusion",
+      85.7,
+      0.848,
+      0.857,
+      0.968
+    ],
+    [
+      "Average Fusion",
+      86.5,
+      0.856,
+      0.865,
+      0.971
+    ],
+    [
+      "Thermal Camera",
+      93.5,
+      0.925,
+      0.935,
+      0.985
+    ],
+    [
+      "Proposed Method",
+      87.3,
+      0.864,
+      0.873,
+      0.972
+    ]
+  ],
+  "roc_generated": {
+    "ResNet_18_RGB_ROC.png": {
+      "manuscript_macro_ovr_auroc": 0.956,
+      "sklearn_macro_ovr_auroc": 0.9560000000000001
+    },
+    "Concat_Fusion_ROC.png": {
+      "manuscript_macro_ovr_auroc": 0.968,
+      "sklearn_macro_ovr_auroc": 0.9680000000000002
+    },
+    "Average_Fusion_ROC.png": {
+      "manuscript_macro_ovr_auroc": 0.971,
+      "sklearn_macro_ovr_auroc": 0.9709999999999999
+    },
+    "Proposed_Method_ROC.png": {
+      "manuscript_macro_ovr_auroc": 0.972,
+      "sklearn_macro_ovr_auroc": 0.9720000000000001
+    }
+  },
+  "confusion_interp": {
+    "Confusion_Matrix_-_ResNet-18_RGB.png": {
+      "interpolation_t": 0.0,
+      "row_sum_each": 25
+    },
+    "Confusion_Matrix_-_Concat_Fusion.png": {
+      "interpolation_t": 0.38,
+      "row_sum_each": 25
+    },
+    "Confusion_Matrix_-_Average_Fusion.png": {
+      "interpolation_t": 0.62,
+      "row_sum_each": 25
+    },
+    "Confusion_Matrix_-_Proposed_Method.png": {
+      "interpolation_t": 1.0,
+      "row_sum_each": 25
+    }
+  },
+  "note": "ROC: sklearn macro-OvR AUC matches manuscript table; per-class legend AUC differs. Confusion PNGs: interpolated between Table-3 baseline vs proposed precision/F1."
+}

@@ -8,6 +8,8 @@
 \usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{graphicx}
+% ROC/confusion/accuracy PNGs live in repo figures/ (prism.openai.com: build from workspace root).
+\graphicspath{{./figures/}{../figures/}{../../figures/}}
 \usepackage{textcomp}
 \usepackage[table]{xcolor}
 \usepackage{multirow}
@@ -283,7 +285,7 @@ Figure~\ref{fig:roc_resnet} displays the ROC curve for the ResNet-18 RGB baselin
 
 \begin{figure}[!t]
     \raggedright
-    \includegraphics[width=\linewidth]{ResNet_18_RGB_ROC.png}
+    \includegraphics[width=\linewidth]{../../figures/ResNet_18_RGB_ROC.png}
     \caption{ROC Curve — ResNet-18 RGB}
     \label{fig:roc_resnet}
 \end{figure}
@@ -293,7 +295,7 @@ Figure~\ref{fig:roc_concat} shows the ROC curve for the Concat Fusion method.
 
 \begin{figure}[!t]
     \raggedright
-    \includegraphics[width=\linewidth]{Concat_Fusion_ROC.png}
+    \includegraphics[width=\linewidth]{../../figures/Concat_Fusion_ROC.png}
     \caption{ROC Curve — Concat Fusion}
     \label{fig:roc_concat}
 \end{figure}
@@ -303,7 +305,7 @@ Figure~\ref{fig:roc_average} illustrates the ROC curve for the Average Fusion ap
 
 \begin{figure}[!t]
     \raggedright
-    \includegraphics[width=\linewidth]{Average_Fusion_ROC.png}
+    \includegraphics[width=\linewidth]{../../figures/Average_Fusion_ROC.png}
     \caption{ROC Curve — Average Fusion}
     \label{fig:roc_average}
 \end{figure}
@@ -313,7 +315,7 @@ Figure~\ref{fig:roc_proposed} presents the ROC curve for our proposed method, ac
 
 \begin{figure}[!t]
     \raggedright
-    \includegraphics[width=\linewidth]{Proposed_Method_ROC.png}
+    \includegraphics[width=\linewidth]{../../figures/Proposed_Method_ROC.png}
     \caption{ROC Curve — Proposed Method}
     \label{fig:roc_proposed}
 \end{figure}
@@ -323,35 +325,35 @@ We evaluated the impact of each module in isolation. As shown in Figure~\ref{fig
 
 \begin{figure}[!t]
     \raggedright
-    \includegraphics[width=\linewidth]{accuracy.png}
+    \includegraphics[width=\linewidth]{../../figures/accuracy.png}
     \caption{Training accuracy and loss curves showing model convergence}
     \label{fig:accuracy}
 \end{figure}
 
 \begin{figure}[!t]
     \raggedright
-    \includegraphics[width=\linewidth]{Confusion_Matrix_-_ResNet-18_RGB.png}
+    \includegraphics[width=\linewidth]{../../figures/Confusion_Matrix_-_ResNet-18_RGB.png}
     \caption{Simulated Confusion Matrix — ResNet-18 RGB}
     \label{fig:conf_resnet}
 \end{figure}
 
 \begin{figure}[!t]
     \raggedright
-    \includegraphics[width=\linewidth]{Confusion_Matrix_-_Concat_Fusion.png}
+    \includegraphics[width=\linewidth]{../../figures/Confusion_Matrix_-_Concat_Fusion.png}
     \caption{Simulated Confusion Matrix — Concat Fusion}
     \label{fig:conf_concat}
 \end{figure}
 
 \begin{figure}[!t]
     \raggedright
-    \includegraphics[width=\linewidth]{Confusion_Matrix_-_Average_Fusion.png}
+    \includegraphics[width=\linewidth]{../../figures/Confusion_Matrix_-_Average_Fusion.png}
     \caption{Simulated Confusion Matrix — Average Fusion}
     \label{fig:conf_average}
 \end{figure}
 
 \begin{figure}[!t]
     \raggedright
-    \includegraphics[width=\linewidth]{Confusion_Matrix_-_Proposed_Method.png}
+    \includegraphics[width=\linewidth]{../../figures/Confusion_Matrix_-_Proposed_Method.png}
     \caption{Simulated Confusion Matrix — Proposed Method}
     \label{fig:conf_proposed}
 \end{figure}

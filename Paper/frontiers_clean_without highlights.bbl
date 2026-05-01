@@ -1,0 +1,345 @@
+\begin{thebibliography}{55}
+\providecommand{\natexlab}[1]{#1}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi:\discretionary{}{}{}#1}\else
+  \providecommand{\doi}{doi:\discretionary{}{}{}\begingroup \urlstyle{rm}\Url}\fi
+\providecommand{\selectlanguage}[1]{\relax}
+\providecommand{\bibAnnoteFile}[1]{%
+  \IfFileExists{#1}{\begin{quotation}\noindent\textsc{Key:} #1\\
+  \textsc{Annotation:}\ \input{#1}\end{quotation}}{}}
+\providecommand{\bibAnnote}[2]{%
+  \begin{quotation}\noindent\textsc{Key:} #1\\
+  \textsc{Annotation:}\ #2\end{quotation}}
+
+\bibitem[{Abade et~al.(2021)Abade, Ferreira, and de~Barros~Vidal}]{abade2021}
+Abade, A., Ferreira, P.~A., and de~Barros~Vidal, F. (2021).
+\newblock Plant diseases recognition on images using convolutional neural networks: A systematic review.
+\newblock \emph{Computers and Electronics in Agriculture} 185, 106125
+\bibAnnoteFile{abade2021}
+
+\bibitem[{Ahmad et~al.(2023)}]{ahmad2023}
+Ahmad, I. et~al. (2023).
+\newblock Deep learning based mango grading and defect detection system.
+\newblock \emph{Multimedia Tools and Applications} 82, 16521--16545
+\bibAnnoteFile{ahmad2023}
+
+\bibitem[{Barbedo(2019)}]{barbedo2019}
+Barbedo, J. G.~A. (2019).
+\newblock Plant disease identification from individual lesions and spots using deep learning.
+\newblock \emph{Biosystems Engineering} 187, 13--21
+\bibAnnoteFile{barbedo2019}
+
+\bibitem[{Benos et~al.(2021)}]{benos2021}
+Benos, L. et~al. (2021).
+\newblock Machine learning in agriculture: A comprehensive updated review.
+\newblock \emph{Sensors} 21, 3758
+\bibAnnoteFile{benos2021}
+
+\bibitem[{Bock et~al.(2010)}]{bock2010}
+Bock, C.~H. et~al. (2010).
+\newblock Plant disease severity estimated visually: a century of research, progress, and challenges.
+\newblock \emph{Phytopathology} 100, 1130--1141
+\bibAnnoteFile{bock2010}
+
+\bibitem[{Chen et~al.(2020)}]{chen2020_transfer}
+Chen, J. et~al. (2020).
+\newblock Using deep transfer learning for image-based plant disease identification.
+\newblock \emph{Computers and Electronics in Agriculture} 173, 105393
+\bibAnnoteFile{chen2020_transfer}
+
+\bibitem[{Coulibaly et~al.(2022)}]{coulibaly2022}
+Coulibaly, S. et~al. (2022).
+\newblock Deep learning for precision agriculture: A bibliometric analysis.
+\newblock \emph{Intelligent Systems with Applications} 16, 200102
+\bibAnnoteFile{coulibaly2022}
+
+\bibitem[{Dosovitskiy et~al.(2021)}]{dosovitskiy2021}
+Dosovitskiy, A. et~al. (2021).
+\newblock An image is worth 16x16 words: Transformers for image recognition at scale.
+\newblock In \emph{Int. Conf. Learning Representations}
+\bibAnnoteFile{dosovitskiy2021}
+
+\bibitem[{{FAO}(2021)}]{fao2021}
+[Dataset] {FAO} (2021).
+\newblock The state of food security and nutrition in the world 2021.
+\newblock Food and Agriculture Organization of the United Nations
+\bibAnnoteFile{fao2021}
+
+\bibitem[{{FAO}(2023)}]{fao2023}
+[Dataset] {FAO} (2023).
+\newblock The state of food security and nutrition in the world 2023.
+\newblock Food and Agriculture Organization of the United Nations
+\bibAnnoteFile{fao2023}
+
+\bibitem[{Ferentinos(2018)}]{ferentinos2018}
+Ferentinos, K.~P. (2018).
+\newblock Deep learning models for plant disease detection and diagnosis.
+\newblock \emph{Computers and Electronics in Agriculture} 145, 311--318
+\bibAnnoteFile{ferentinos2018}
+
+\bibitem[{Guo et~al.(2022)}]{guo2022}
+Guo, M.-H. et~al. (2022).
+\newblock Attention mechanisms in computer vision: A survey.
+\newblock \emph{Computational Visual Media} 8, 331--368
+\bibAnnoteFile{guo2022}
+
+\bibitem[{Hasan et~al.(2020)}]{hasan2024}
+Hasan, R.~I. et~al. (2020).
+\newblock Review of the state of the art of deep learning for plant diseases: A broad analysis and discussion.
+\newblock \emph{Plant Methods} 16, 94
+\bibAnnoteFile{hasan2024}
+
+\bibitem[{Hassan et~al.(2021)}]{hassan2021}
+Hassan, S.~M. et~al. (2021).
+\newblock Plant disease identification using shallow convolutional neural network.
+\newblock \emph{Journal of Ambient Intelligence and Humanized Computing} 12, 4467--4481
+\bibAnnoteFile{hassan2021}
+
+\bibitem[{He et~al.(2016)}]{he2016}
+He, K. et~al. (2016).
+\newblock Deep residual learning for image recognition.
+\newblock In \emph{Proc. IEEE Conf. Computer Vision and Pattern Recognition}. 770--778
+\bibAnnoteFile{he2016}
+
+\bibitem[{Hinton et~al.(2015)Hinton, Vinyals, and Dean}]{hinton2015}
+Hinton, G., Vinyals, O., and Dean, J. (2015).
+\newblock Distilling the knowledge in a neural network.
+\newblock \emph{arXiv preprint arXiv:1503.02531}
+\bibAnnoteFile{hinton2015}
+
+\bibitem[{Ji et~al.(2023)}]{ji2023}
+Ji, M. et~al. (2023).
+\newblock Multi-label learning for crop disease recognition using transfer learning.
+\newblock \emph{Frontiers in Plant Science} 14, 1139000
+\bibAnnoteFile{ji2023}
+
+\bibitem[{Kakarla(2022)}]{MendeleyDataset}
+[Dataset] Kakarla, S. (2022).
+\newblock Mangofruitdds.
+\newblock Mendeley Data, V1.
+\newblock \doi{10.17632/h743825785.1}
+\bibAnnoteFile{MendeleyDataset}
+
+\bibitem[{Kamilaris and Prenafeta-Boldú(2018)}]{kamilaris2018}
+Kamilaris, A. and Prenafeta-Boldú, F.~X. (2018).
+\newblock Deep learning in agriculture: A survey.
+\newblock \emph{Computers and Electronics in Agriculture} 147, 70--90
+\bibAnnoteFile{kamilaris2018}
+
+\bibitem[{Karniadakis et~al.(2021)}]{karniadakis2021}
+Karniadakis, G.~E. et~al. (2021).
+\newblock Physics-informed machine learning.
+\newblock \emph{Nature Reviews Physics} 3, 422--440
+\bibAnnoteFile{karniadakis2021}
+
+\bibitem[{Khanal et~al.(2017)Khanal, Fulton, and Shearer}]{khanal2017}
+Khanal, S., Fulton, J., and Shearer, S. (2017).
+\newblock An overview of current and potential applications of thermal remote sensing in precision agriculture.
+\newblock \emph{Computers and Electronics in Agriculture} 139, 22--32
+\bibAnnoteFile{khanal2017}
+
+\bibitem[{Kouidri et~al.(2021)}]{kouidri2021}
+Kouidri, S. et~al. (2021).
+\newblock Domain adaptation for plant disease recognition: A survey.
+\newblock \emph{Computers and Electronics in Agriculture} 187, 106250
+\bibAnnoteFile{kouidri2021}
+
+\bibitem[{Li et~al.(2020)}]{li2020}
+Li, L. et~al. (2020).
+\newblock Real-time detection of tomato leaf diseases using deep learning and mobile devices.
+\newblock \emph{Computers and Electronics in Agriculture} 172, 105336
+\bibAnnoteFile{li2020}
+
+\bibitem[{Li et~al.(2023)}]{li2023_kd}
+Li, Y. et~al. (2023).
+\newblock Knowledge distillation for plant disease classification.
+\newblock \emph{Applied Intelligence} 53, 24882--24895
+\bibAnnoteFile{li2023_kd}
+
+\bibitem[{Liu and Wang(2020)}]{liu2020_yolo}
+Liu, J. and Wang, X. (2020).
+\newblock Tomato diseases and pests detection based on improved yolo v3 convolutional neural network.
+\newblock \emph{Frontiers in Plant Science} 11, 898
+\bibAnnoteFile{liu2020_yolo}
+
+\bibitem[{Liu et~al.(2022)}]{liu2022convnext}
+Liu, Z. et~al. (2022).
+\newblock A convnet for the 2020s.
+\newblock In \emph{Proc. IEEE/CVF Conference on Computer Vision and Pattern Recognition}. 11976--11986
+\bibAnnoteFile{liu2022convnext}
+
+\bibitem[{Loshchilov and Hutter(2019)}]{loshchilov2019}
+Loshchilov, I. and Hutter, F. (2019).
+\newblock Decoupled weight decay regularization.
+\newblock In \emph{Int. Conf. Learning Representations}
+\bibAnnoteFile{loshchilov2019}
+
+\bibitem[{Lu et~al.(2020)}]{lu2020}
+Lu, B. et~al. (2020).
+\newblock Spectral-spatial classification of hyperspectral images for plant disease detection.
+\newblock \emph{Remote Sensing} 12, 2270
+\bibAnnoteFile{lu2020}
+
+\bibitem[{Mahlein(2016)}]{mahlein2016}
+Mahlein, A.-K. (2016).
+\newblock Plant disease detection by imaging sensors–parallels and specific demands for precision agriculture.
+\newblock \emph{Plant Disease} 100, 241--251
+\bibAnnoteFile{mahlein2016}
+
+\bibitem[{Maimaitijiang et~al.(2020)}]{maimaitijiang2020}
+Maimaitijiang, M. et~al. (2020).
+\newblock Soybean yield prediction from uav using multimodal data fusion and deep learning.
+\newblock \emph{Remote Sensing of Environment} 237, 111558
+\bibAnnoteFile{maimaitijiang2020}
+
+\bibitem[{Martinelli et~al.(2015)}]{martinelli2015}
+Martinelli, F. et~al. (2015).
+\newblock Advanced methods of plant disease detection. a review.
+\newblock \emph{Agronomy for Sustainable Development} 35, 1--25
+\bibAnnoteFile{martinelli2015}
+
+\bibitem[{Mohanty et~al.(2016)Mohanty, Hughes, and Salathé}]{mohanty2016}
+Mohanty, S.~P., Hughes, D.~P., and Salathé, M. (2016).
+\newblock Using deep learning for image-based plant disease detection.
+\newblock \emph{Frontiers in Plant Science} 7, 1419
+\bibAnnoteFile{mohanty2016}
+
+\bibitem[{Nagasubramanian et~al.(2019)}]{nagasubramanian2019}
+Nagasubramanian, K. et~al. (2019).
+\newblock Plant disease identification using explainable 3d deep learning on hyperspectral images.
+\newblock \emph{Plant Methods} 15, 98
+\bibAnnoteFile{nagasubramanian2019}
+
+\bibitem[{Niu et~al.(2021)Niu, Zhong, and Yu}]{niu2021}
+Niu, Z., Zhong, G., and Yu, H. (2021).
+\newblock A review on the attention mechanism of deep learning.
+\newblock \emph{Neurocomputing} 452, 48--62
+\bibAnnoteFile{niu2021}
+
+\bibitem[{Noon et~al.(2020)}]{noon2020}
+Noon, S.~K. et~al. (2020).
+\newblock Handling class imbalance problem in plant disease detection.
+\newblock \emph{IEEE Access} 8, 224060--224070
+\bibAnnoteFile{noon2020}
+
+\bibitem[{Paszke et~al.(2019)}]{paszke2019}
+Paszke, A. et~al. (2019).
+\newblock Pytorch: An imperative style, high-performance deep learning library.
+\newblock In \emph{Advances in Neural Information Processing Systems}
+\bibAnnoteFile{paszke2019}
+
+\bibitem[{Picon et~al.(2019)}]{picon2022}
+Picon, A. et~al. (2019).
+\newblock Crop conditional convolutional neural networks for massive multi-crop plant disease classification over cell phone acquired images taken on real field conditions.
+\newblock \emph{Computers and Electronics in Agriculture} 167, 105093
+\bibAnnoteFile{picon2022}
+
+\bibitem[{Pineda et~al.(2021)Pineda, Barón, and Pérez-Bueno}]{pineda2021}
+Pineda, M., Barón, M., and Pérez-Bueno, M.~L. (2021).
+\newblock Thermal imaging for plant stress detection and phenotyping.
+\newblock \emph{Remote Sensing} 13, 68
+\bibAnnoteFile{pineda2021}
+
+\bibitem[{Pongnumkul et~al.(2015)Pongnumkul, Chaovalit, and Surasvadi}]{pongnumkul2015}
+Pongnumkul, S., Chaovalit, P., and Surasvadi, N. (2015).
+\newblock Smartphone-based application for plant disease diagnosis.
+\newblock In \emph{Proc. Int. Conf. on Information Science and Security}
+\bibAnnoteFile{pongnumkul2015}
+
+\bibitem[{Raissi et~al.(2019)Raissi, Perdikaris, and Karniadakis}]{raissi2019}
+Raissi, M., Perdikaris, P., and Karniadakis, G.~E. (2019).
+\newblock Physics-informed neural networks: A deep learning framework for solving forward and inverse problems.
+\newblock \emph{Journal of Computational Physics} 378, 686--707
+\bibAnnoteFile{raissi2019}
+
+\bibitem[{Savary et~al.(2019)}]{savary2019}
+Savary, S. et~al. (2019).
+\newblock The global burden of pathogens and pests on major food crops.
+\newblock \emph{Nature Ecology \& Evolution} 3, 430--439
+\bibAnnoteFile{savary2019}
+
+\bibitem[{Shorten and Khoshgoftaar(2019)}]{shorten2019}
+Shorten, C. and Khoshgoftaar, T.~M. (2019).
+\newblock A survey on image data augmentation for deep learning.
+\newblock \emph{Journal of Big Data} 6, 1--48
+\bibAnnoteFile{shorten2019}
+
+\bibitem[{Singh et~al.(2019)Singh, Chouhan, Jain, and Jain}]{singh2019}
+Singh, U.~P., Chouhan, S.~S., Jain, S., and Jain, S. (2019).
+\newblock Multilayer convolution neural network for the classification of mango leaves infected by anthracnose disease.
+\newblock \emph{IEEE Access} 7, 43721--43729
+\bibAnnoteFile{singh2019}
+
+\bibitem[{Sishodia et~al.(2020)Sishodia, Ray, and Singh}]{sishodia2020}
+Sishodia, R.~P., Ray, R.~L., and Singh, S.~K. (2020).
+\newblock Applications of remote sensing in precision agriculture: A review.
+\newblock \emph{Remote Sensing} 12, 3136
+\bibAnnoteFile{sishodia2020}
+
+\bibitem[{Tan et~al.(2018)}]{tan2018}
+Tan, C. et~al. (2018).
+\newblock A survey on deep transfer learning.
+\newblock In \emph{Artificial Neural Networks and Machine Learning–ICANN 2018}. 270--279
+\bibAnnoteFile{tan2018}
+
+\bibitem[{Temniranrat et~al.(2021)}]{temniranrat2021}
+Temniranrat, P. et~al. (2021).
+\newblock Agri-tech: A smart farm application for disease detection.
+\newblock In \emph{Proc. Int. Joint Conf. on Computer Science and Software Engineering}
+\bibAnnoteFile{temniranrat2021}
+
+\bibitem[{Thakur et~al.(2022)}]{thakur2022}
+Thakur, P.~S. et~al. (2022).
+\newblock Trends in vision-based machine learning techniques for plant disease identification: A systematic review.
+\newblock \emph{Expert Systems with Applications} 208, 118117
+\bibAnnoteFile{thakur2022}
+
+\bibitem[{Tulu et~al.(2026)Tulu, Teshome, Ampatzidis, Li, Pavan, Golmohammadi et~al.}]{tulu2026rgb}
+Tulu, B.~B., Teshome, F.~T., Ampatzidis, Y., Li, C., Pavan, W., Golmohammadi, G., et~al. (2026).
+\newblock Rgb-to-synthetic-thermal image translation using generative ai to support crop water stress assessment.
+\newblock \emph{Computers and Electronics in Agriculture} 241, 111273
+\bibAnnoteFile{tulu2026rgb}
+
+\bibitem[{Vaswani et~al.(2017)}]{vaswani2017}
+Vaswani, A. et~al. (2017).
+\newblock Attention is all you need.
+\newblock In \emph{Advances in Neural Information Processing Systems}. 5998--6008
+\bibAnnoteFile{vaswani2017}
+
+\bibitem[{Wang et~al.(2022)}]{wang2022_synthetic}
+Wang, G. et~al. (2022).
+\newblock Automatic image-based plant disease severity estimation using deep learning.
+\newblock \emph{Computational Intelligence and Neuroscience} 2022, 1962843
+\bibAnnoteFile{wang2022_synthetic}
+
+\bibitem[{Weiss et~al.(2016)Weiss, Khoshgoftaar, and Wang}]{weiss2016}
+Weiss, K., Khoshgoftaar, T.~M., and Wang, D. (2016).
+\newblock A survey of transfer learning.
+\newblock \emph{Journal of Big Data} 3, 9
+\bibAnnoteFile{weiss2016}
+
+\bibitem[{Xiao et~al.(2025)Xiao, Nayak, Zhang, Tortei, and Loianno}]{xiao2025thermalgen}
+Xiao, J., Nayak, R., Zhang, N., Tortei, D., and Loianno, G. (2025).
+\newblock Thermalgen: Style-disentangled flow-based generative models for rgb-to-thermal image translation.
+\newblock \emph{arXiv preprint arXiv:2509.24878}
+\bibAnnoteFile{xiao2025thermalgen}
+
+\bibitem[{Xu et~al.(2023)}]{xu2023}
+Xu, M. et~al. (2023).
+\newblock Multimodal learning with transformers: A survey.
+\newblock \emph{IEEE Transactions on Pattern Analysis and Machine Intelligence} 45, 12113--12132
+\bibAnnoteFile{xu2023}
+
+\bibitem[{Zhai et~al.(2020)}]{zhai2020}
+Zhai, Z. et~al. (2020).
+\newblock Crop disease detection using uav thermal imaging.
+\newblock In \emph{Proc. ASABE Annual International Meeting}
+\bibAnnoteFile{zhai2020}
+
+\bibitem[{Zhuang et~al.(2020)}]{zhuang2020}
+Zhuang, F. et~al. (2020).
+\newblock A comprehensive survey on transfer learning.
+\newblock \emph{Proceedings of the IEEE} 109, 43--76
+\bibAnnoteFile{zhuang2020}
+
+\end{thebibliography}
