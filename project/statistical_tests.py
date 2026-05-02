@@ -67,6 +67,8 @@ from scipy import stats
 from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
 from sklearn.preprocessing import label_binarize
 
+import matplotlib.pyplot as plt
+
 
 @dataclass(frozen=True)
 class McNemarResult:
@@ -113,15 +115,15 @@ class BootstrapAUCResult:
     p_two_sided: float  # proportion of bootstrap Δ straddling 0 → approximate
 
 
-def bootstrap_macro_auc_difference(
+def bootstrap_macro_auc_deltas(
     y_true: np.ndarray,
     proba_a: np.ndarray,
     proba_b: np.ndarray,
     *,
     n_bootstrap: int = 2000,
     random_state: int | None = 0,
-) -> BootstrapAUCResult:
-    """Bootstrap CI for macro-OvR AUROC(A) − AUROC(B) over the same test points."""
+) -> tuple[float, float, np.ndarray]:
+    """Return (AUC_A, AUC_B, deltas) where deltas = AUC(A) − AUC(B) over bootstrap resamples."""
     y_true = np.asarray(y_true).ravel().astype(np.int64)
     proba_a = np.asarray(proba_a)
     proba_b = np.asarray(proba_b)
@@ -133,14 +135,34 @@ def bootstrap_macro_auc_difference(
 
     auc_a_full = macro_auc(proba_a)
     auc_b_full = macro_auc(proba_b)
+
     rng = np.random.RandomState(random_state)
     n = len(y_true)
-    deltas = np.empty(n_bootstrap)
     idx_all = rng.randint(0, n, size=(n_bootstrap, n))
+    deltas = np.empty(n_bootstrap, dtype=np.float64)
     for i in range(n_bootstrap):
         idx = idx_all[i]
         deltas[i] = macro_auc(proba_a[idx]) - macro_auc(proba_b[idx])
 
+    return auc_a_full, auc_b_full, deltas
+
+
+def bootstrap_macro_auc_difference(
+    y_true: np.ndarray,
+    proba_a: np.ndarray,
+    proba_b: np.ndarray,
+    *,
+    n_bootstrap: int = 2000,
+    random_state: int | None = 0,
+) -> BootstrapAUCResult:
+    """Bootstrap CI for macro-OvR AUROC(A) − AUROC(B) over the same test points."""
+    auc_a_full, auc_b_full, deltas = bootstrap_macro_auc_deltas(
+        y_true,
+        proba_a,
+        proba_b,
+        n_bootstrap=n_bootstrap,
+        random_state=random_state,
+    )
     low, high = np.percentile(deltas, [2.5, 97.5])
     p_approx = 2.0 * min(np.mean(deltas <= 0), np.mean(deltas >= 0))
     if p_approx > 1.0:
@@ -337,6 +359,71 @@ def paired_csv_report_text(summary: dict) -> str:
     return "\n".join(lines)
 
 
+def save_mcnemar_plot(
+    *,
+    y_true: np.ndarray,
+    pred_a: np.ndarray,
+    pred_b: np.ndarray,
+    out_path: Path,
+    label_a: str,
+    label_b: str,
+    pvalue: float,
+    method: str,
+) -> None:
+    y_true = np.asarray(y_true).ravel()
+    pred_a = np.asarray(pred_a).ravel()
+    pred_b = np.asarray(pred_b).ravel()
+    ca = pred_a == y_true
+    cb = pred_b == y_true
+    n11 = int(np.sum(ca & cb))       # both correct
+    n10 = int(np.sum(ca & ~cb))      # only A correct
+    n01 = int(np.sum(~ca & cb))      # only B correct
+    n00 = int(np.sum(~ca & ~cb))     # both wrong
+    mat = np.array([[n11, n10], [n01, n00]], dtype=np.int64)
+
+    fig, ax = plt.subplots(figsize=(6.2, 4.8), dpi=200)
+    im = ax.imshow(mat, cmap="Blues")
+    for (i, j), v in np.ndenumerate(mat):
+        ax.text(j, i, str(v), ha="center", va="center", fontsize=11, fontweight="bold", color="black")
+
+    ax.set_xticks([0, 1], labels=["B correct", "B wrong"])
+    ax.set_yticks([0, 1], labels=["A correct", "A wrong"])
+    ax.set_title(f"McNemar paired outcomes\n{label_a} vs {label_b} (p={pvalue:.4f}, {method})")
+    cbar = fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
+    cbar.set_label("count", rotation=90)
+    fig.tight_layout()
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path, bbox_inches="tight")
+    plt.close(fig)
+
+
+def save_bootstrap_delta_plot(
+    *,
+    deltas: np.ndarray,
+    out_path: Path,
+    label_a: str,
+    label_b: str,
+    ci_low: float,
+    ci_high: float,
+    delta_mean: float,
+) -> None:
+    deltas = np.asarray(deltas, dtype=np.float64).ravel()
+    fig, ax = plt.subplots(figsize=(7.0, 4.2), dpi=200)
+    ax.hist(deltas, bins=40, color="#2E6FAD", alpha=0.85, edgecolor="white")
+    ax.axvline(0.0, color="black", linewidth=1.2, linestyle="--", label="0")
+    ax.axvline(ci_low, color="#C0392B", linewidth=1.5, linestyle="-", label="95% CI")
+    ax.axvline(ci_high, color="#C0392B", linewidth=1.5, linestyle="-")
+    ax.axvline(delta_mean, color="#16A085", linewidth=1.6, linestyle="-", label="mean")
+    ax.set_title(f"Bootstrap Δmacro-OvR AUROC distribution\nΔ = AUC({label_a}) − AUC({label_b})")
+    ax.set_xlabel("Δmacro-OvR AUROC")
+    ax.set_ylabel("frequency")
+    ax.legend(frameon=False)
+    fig.tight_layout()
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path, bbox_inches="tight")
+    plt.close(fig)
+
+
 def metrics_from_probs(
     y_true: np.ndarray,
     y_pred: np.ndarray,
@@ -503,6 +590,23 @@ CSV (--paired-csv): header row + one row per seed; numeric columns named by mode
     p.add_argument("--bootstrap", type=int, default=2000, help="Bootstrap resamples for AUC delta")
     p.add_argument("--seed", type=int, default=0)
     p.add_argument(
+        "--plots",
+        action="store_true",
+        help="Save PNG plots (McNemar heatmap + bootstrap ΔAUROC histogram) to --plot-out",
+    )
+    p.add_argument(
+        "--plot-out",
+        default=str(Path(__file__).resolve().parents[1] / "figures"),
+        metavar="DIR",
+        help="Output directory for plots (default: repo_root/figures)",
+    )
+    p.add_argument(
+        "--plot-prefix",
+        default="stats",
+        metavar="TEXT",
+        help="Filename prefix for generated plot PNGs",
+    )
+    p.add_argument(
         "--format",
         choices=("table", "json"),
         default="table",
@@ -565,6 +669,47 @@ CSV (--paired-csv): header row + one row per seed; numeric columns named by mode
         report = demo_synthetic(n_bootstrap=min(args.bootstrap, 800), seed=args.seed)
         report["_note"] = "synthetic demo; use real NPZs for paper results."
         emit(report)
+        if args.plots:
+            # Recreate inputs for plots (same seed path as demo_synthetic)
+            rng = np.random.RandomState(args.seed)
+            n = 300
+            n_classes = 5
+            y_true = rng.randint(0, n_classes, size=n)
+            pred_a = np.where(rng.rand(n) < 0.82, y_true, rng.randint(0, n_classes, n))
+            pred_b = np.where(rng.rand(n) < 0.86, y_true, rng.randint(0, n_classes, n))
+            proba_a = rng.dirichlet(np.ones(n_classes), size=n).astype(np.float64)
+            proba_b = rng.dirichlet(np.ones(n_classes), size=n).astype(np.float64)
+            for i in range(n):
+                proba_a[i, pred_a[i]] += 0.35
+                proba_b[i, pred_b[i]] += 0.45
+                proba_a[i] /= proba_a[i].sum()
+                proba_b[i] /= proba_b[i].sum()
+
+            mcn = mcnemar_from_preds(y_true, pred_a, pred_b)
+            out_dir = Path(args.plot_out)
+            save_mcnemar_plot(
+                y_true=y_true,
+                pred_a=pred_a,
+                pred_b=pred_b,
+                out_path=out_dir / f"{args.plot_prefix}_mcnemar.png",
+                label_a=args.label_a,
+                label_b=args.label_b,
+                pvalue=mcn.pvalue,
+                method=mcn.method,
+            )
+            auc_a, auc_b, deltas = bootstrap_macro_auc_deltas(
+                y_true, proba_a, proba_b, n_bootstrap=min(args.bootstrap, 800), random_state=args.seed + 1
+            )
+            ci_low, ci_high = np.percentile(deltas, [2.5, 97.5])
+            save_bootstrap_delta_plot(
+                deltas=deltas,
+                out_path=out_dir / f"{args.plot_prefix}_bootstrap_delta_auc.png",
+                label_a=args.label_a,
+                label_b=args.label_b,
+                ci_low=float(ci_low),
+                ci_high=float(ci_high),
+                delta_mean=float(np.mean(deltas)),
+            )
         return
 
     if not args.a or not args.b:
@@ -579,6 +724,33 @@ CSV (--paired-csv): header row + one row per seed; numeric columns named by mode
         y_a, p_a, p_b, pr_a, pr_b, n_bootstrap=args.bootstrap, random_state=args.seed
     )
     emit(report)
+    if args.plots:
+        out_dir = Path(args.plot_out)
+        mcn = mcnemar_from_preds(y_a, p_a, p_b)
+        save_mcnemar_plot(
+            y_true=y_a,
+            pred_a=p_a,
+            pred_b=p_b,
+            out_path=out_dir / f"{args.plot_prefix}_mcnemar.png",
+            label_a=args.label_a,
+            label_b=args.label_b,
+            pvalue=mcn.pvalue,
+            method=mcn.method,
+        )
+        if pr_a is not None and pr_b is not None:
+            _, _, deltas = bootstrap_macro_auc_deltas(
+                y_a, pr_a, pr_b, n_bootstrap=args.bootstrap, random_state=args.seed
+            )
+            ci_low, ci_high = np.percentile(deltas, [2.5, 97.5])
+            save_bootstrap_delta_plot(
+                deltas=deltas,
+                out_path=out_dir / f"{args.plot_prefix}_bootstrap_delta_auc.png",
+                label_a=args.label_a,
+                label_b=args.label_b,
+                ci_low=float(ci_low),
+                ci_high=float(ci_high),
+                delta_mean=float(np.mean(deltas)),
+            )
 
 
 if __name__ == "__main__":
